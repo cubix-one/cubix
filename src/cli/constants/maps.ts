@@ -61,6 +61,10 @@ export const annotationMap: { [key: string]: IAnnotationMap } = {
         location: 'cubix/server/components',
         prefix: 'server'
     },
+    'server_module': {
+        location: 'cubix/server/modules',
+        prefix: 'module'
+    },
     'event_handlers': {
         location: 'cubix/server/eventHandlers',
         prefix: 'server'
