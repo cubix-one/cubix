@@ -67,7 +67,6 @@ export default class CreateProject {
         const values = [this.options.projectName, this.options.rootDir, this.options.outputDir];
 
         const files = getAllFiles(`${process.cwd()}/${this.options.projectName}`);
-        console.log(files);
 
         this.spinner.message('Updating flags...');
         files.forEach(file => {
