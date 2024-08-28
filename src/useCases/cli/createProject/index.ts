@@ -87,7 +87,6 @@ export default class CreateProject {
     private async installDependencies() {
         const { projectName, packageManager } = this.options;
         const projectPath = path.join(process.cwd(), projectName);
-        const command = `${packageManager} install`;
 
         this.spinner.message('Installing dependencies...');
         try {
@@ -96,30 +95,33 @@ export default class CreateProject {
                 process.exit(1);
             }
 
-            await execa(command, { cwd: projectPath });
+            // Install regular dependencies
+            await execa(packageManager, ['install'], { cwd: projectPath });
 
+            // Install devDependencies
             const devDeps = devDependencies.join(' ');
-            let packageManagerCommand;
+            let installCommand;
             switch (packageManager) {
                 case 'npm':
-                    packageManagerCommand = 'install --save-dev';
+                    installCommand = ['install', '--save-dev'];
                     break;
                 case 'yarn':
-                    packageManagerCommand = 'add --dev';
+                    installCommand = ['add', '--dev'];
                     break;
                 case 'pnpm':
-                    packageManagerCommand = 'add --save-dev';
+                    installCommand = ['add', '--save-dev'];
                     break;
                 case 'bun':
-                    packageManagerCommand = 'add --dev';
+                    installCommand = ['add', '--dev'];
                     break;
                 default:
                     console.error(`Unsupported package manager: ${packageManager}`);
                     process.exit(1);
             }
-            await execa(`${packageManager} ${packageManagerCommand} ${devDeps}`, { cwd: projectPath });
+
+            await execa(packageManager, [...installCommand, ...devDependencies], { cwd: projectPath });
         } catch (error: any) {
-            console.error(`Error: ${error.message}`);
+            console.error(`Erro: ${error.message}`);
             process.exit(1);
         }
     }
