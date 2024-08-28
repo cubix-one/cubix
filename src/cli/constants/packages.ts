@@ -4,5 +4,5 @@ export const devDependencies = [
     "@rbxts/types",
     "@types/bun",
     "reflect-metadata",
-    "cubix"
+    "cubix-one"
 ]
