@@ -1,5 +1,5 @@
 import simpleGit, { SimpleGit } from 'simple-git';
-import { createDirectory, fileExists, getAllFiles, readFile, writeFile } from "@utils/cli";
+import { createDirectory, deleteDirectory, fileExists, getAllFiles, readFile, writeFile } from "@utils/cli";
 import { devDependencies } from '@cli/constants/packages'
 import { execa } from 'execa';
 import path from 'path';
@@ -49,8 +49,13 @@ export default class CreateProject {
 
         this.spinner.message('Cloning template repository...');
         await this.git
-            .clone(repoUrl, destPath,)
-            .then(() => this.spinner.message('Template repository cloned successfully'))
+            .clone(repoUrl, destPath, {
+                '--branch': 'main',
+            })
+            .then(() => {
+                this.spinner.message('Template repository cloned successfully');
+                deleteDirectory(path.join(destPath, '.git'));
+            })
             .catch((err) => {
                 console.error('failed to clone template repository: ', err);
                 process.exit(1);
@@ -67,6 +72,7 @@ export default class CreateProject {
         const values = [this.options.projectName, this.options.rootDir, this.options.outputDir];
 
         const files = getAllFiles(`${process.cwd()}/${this.options.projectName}`);
+        console.log(files);
 
         this.spinner.message('Updating flags...');
         files.forEach(file => {
