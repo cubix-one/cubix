@@ -1,13 +1,13 @@
 {
   "name": "cubix-one",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "main": "dist/index.js",
   "type": "commonjs",
   "bin": {
     "cubix": "dist/cli/index.js"
   },
   "scripts": {
-    "build": "bun run tsc",
+    "build": "bun build ./src/index.ts ./src/cli/index.ts --outdir=./dist --target=node",
     "start": "bun run dist/index.js"
   },
   "devDependencies": {
