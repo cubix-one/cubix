@@ -2,26 +2,26 @@
 
 ## Table of Contents
 
-1. [Introduction](#introduction)
-2. [Installation](#installation)
-3. [Getting Started](#getting-started)
-   3.1. [Creating a New Project](#creating-a-new-project)
-   3.2. [Project Structure](#project-structure)
-4. [Annotations](#annotations)
-   4.1. [List of Annotations](#list-of-annotations)
-   4.2. [Using Annotations](#using-annotations)
-5. [CLI](#cli)
-   5.1. [Available Commands](#available-commands)
-   5.2. [Global Options](#global-options)
-6. [Development](#development)
-   6.1. [Watch Mode](#watch-mode)
-   6.2. [Compilation](#compilation)
-7. [Architecture](#architecture)
-8. [Roblox Studio Integration](#roblox-studio-integration)
-9. [Best Practices](#best-practices)
-10. [Troubleshooting](#troubleshooting)
-11. [Contributing](#contributing)
-12. [License](#license)
+- [Introduction](#1-introduction)
+- [Installation](#2-installation)
+- [Getting Started](#3-getting-started)
+  - [Creating a New Project](#31-creating-a-new-project)
+  - [Project Structure](#32-project-structure)
+- [Annotations](#4-annotations)
+  - [List of Annotations](#41-list-of-annotations)
+  - [Using Annotations](#42-using-annotations)
+- [CLI](#5-cli)
+  - [Available Commands](#51-available-commands)
+  - [Global Options](#52-global-options)
+- [Development](#6-development)
+  - [Watch Mode](#61-watch-mode)
+  - [Compilation](#62-compilation)
+- [Architecture](#7-architecture)
+- [Roblox Studio Integration](#8-roblox-studio-integration)
+- [Best Practices](#9-best-practices)
+- [Troubleshooting](#10-troubleshooting)
+- [Contributing](#11-contributing)
+- [License](#12-license)
 
 ## 1. Introduction
 
@@ -193,6 +193,7 @@ cubix watch
 > ```bash
 > bun run watch
 > ```
+> .
 
 ### 6.2. Compilation
 
@@ -212,6 +213,7 @@ cubix build
 > ```bash
 > bun run build
 > ```
+> .
 
 This command will compile your project and generate the output in the `out/` directory.
 
