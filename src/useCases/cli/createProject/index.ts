@@ -1,5 +1,5 @@
 import simpleGit, { SimpleGit } from 'simple-git';
-import { createDirectory, fileExists, getFiles, readFile, writeFile } from "@utils/cli";
+import { createDirectory, fileExists, getAllFiles, readFile, writeFile } from "@utils/cli";
 import { devDependencies } from '@cli/constants/packages'
 import { execa } from 'execa';
 import path from 'path';
@@ -66,7 +66,8 @@ export default class CreateProject {
         const flags = ['::PROJECT_NAME::', '::ROOT_DIR::', '::OUT_DIR::'];
         const values = [this.options.projectName, this.options.rootDir, this.options.outputDir];
 
-        const files = getFiles(`${process.cwd()}/${this.options.projectName}`, '*');
+        const files = getAllFiles(`${process.cwd()}/${this.options.projectName}`);
+        console.log(files);
 
         this.spinner.message('Updating flags...');
         files.forEach(file => {
