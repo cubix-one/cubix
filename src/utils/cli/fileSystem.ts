@@ -7,11 +7,11 @@ export const getFiles = (rootDir: string, extension: string = 'ts'): string[] =>
 }
 
 export const getAllFiles = (rootDir: string): string[] => {
-    const normalFiles = globSync(`${rootDir}/**/*`, { dot: true, nodir: true });
-    const hiddenFiles = globSync(`${rootDir}/**/.*`, { dot: true, nodir: true });
-
-    return [...new Set([...normalFiles, ...hiddenFiles])]
-        .filter(file => !path.basename(file).startsWith('.git/'));
+    return globSync(`${rootDir}/**/*`, {
+        dot: true,
+        nodir: true,
+        ignore: ['**/node_modules/**', '**/.git/**', '**/.vscode/**']
+    }).map(file => path.resolve(file));
 }
 
 export const getFileName = (filePath: string): string => {
@@ -65,7 +65,7 @@ export function deleteFile(filePath: string): void {
     fs.unlinkSync(filePath);
 }
 
-export function deleteDirectory(filePath: string, recursive: boolean = true): void {
-    const resolvedPath = path.resolve(filePath);
+export function deleteDirectory(directoryPath: string, recursive: boolean = true): void {
+    const resolvedPath = path.resolve(directoryPath);
     fs.rmdirSync(resolvedPath, { recursive });
 }
