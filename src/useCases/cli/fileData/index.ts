@@ -16,7 +16,7 @@ export interface IAnnotatedFile extends IFileBase {
     imports: string[];
     finalImports: string[];
     finalPath: string;
-    prefix: 'client' | 'server' | 'shared';
+    prefix: 'client' | 'server' | 'shared' | 'module';
 }
 
 export interface IFile extends IFileBase {
@@ -57,7 +57,7 @@ export default class FileData {
 
                 const destination = this.getDestination(content);
                 const prefix = annotationMap[annotations[0]].prefix;
-                const destinationName = toPascalCase(getFileName(file).split('.')[0]) + `.${prefix}.ts`;
+                const destinationName = toPascalCase(getFileName(file).split('.')[0]) + `${prefix == 'module' ? '' : `.${prefix}`}.ts`;
                 const originName = getFileName(file);
                 const destinationPath = path.resolve(process.cwd(), this.outputDir, destination, destinationName);
                 const imports = this.getImports(file);
