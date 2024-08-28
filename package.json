@@ -1,6 +1,6 @@
 {
   "name": "cubix-one",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "main": "dist/index.js",
   "type": "commonjs",
   "bin": {
