@@ -25,10 +25,6 @@ export const annotationMap: { [key: string]: IAnnotationMap } = {
         location: 'cubix/client/controllers',
         prefix: 'client'
     },
-    'client_service': {
-        location: 'cubix/client/services',
-        prefix: 'client'
-    },
     'client_component': {
         location: 'cubix/client/components',
         prefix: 'client'
@@ -53,10 +49,6 @@ export const annotationMap: { [key: string]: IAnnotationMap } = {
         location: 'cubix/server/controllers',
         prefix: 'server'
     },
-    'server_service': {
-        location: 'cubix/server/services',
-        prefix: 'server'
-    },
     'server_component': {
         location: 'cubix/server/components',
         prefix: 'server'
@@ -68,10 +60,6 @@ export const annotationMap: { [key: string]: IAnnotationMap } = {
     'event_handlers': {
         location: 'cubix/server/eventHandlers',
         prefix: 'server'
-    },
-    'shared_service': {
-        location: 'cubix/shared/services',
-        prefix: 'shared'
     },
     'shared_constants': {
         location: 'cubix/shared/constants',
