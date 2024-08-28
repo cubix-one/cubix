@@ -17,7 +17,7 @@ export const getImportMap = (key?: string): string[] | Map<string, string[]> =>
 
 export type IAnnotationMap = {
     location: string;
-    prefix: 'client' | 'server' | 'shared';
+    prefix: 'client' | 'server' | 'shared' | 'module';
 };
 
 export const annotationMap: { [key: string]: IAnnotationMap } = {
@@ -32,6 +32,10 @@ export const annotationMap: { [key: string]: IAnnotationMap } = {
     'client_component': {
         location: 'cubix/client/components',
         prefix: 'client'
+    },
+    'client_module': {
+        location: 'cubix/client/modules',
+        prefix: 'module'
     },
     'ui_component': {
         location: 'cubix/client/ui',
@@ -76,6 +80,10 @@ export const annotationMap: { [key: string]: IAnnotationMap } = {
     'shared_utils': {
         location: 'cubix/shared/utils',
         prefix: 'shared'
+    },
+    'shared_module': {
+        location: 'cubix/shared/modules',
+        prefix: 'module'
     }
 };
 
