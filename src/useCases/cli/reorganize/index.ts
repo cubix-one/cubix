@@ -19,7 +19,9 @@ export default class Reorganize {
 
     private updateImports(fileData: IFileData) {
         for (const file of fileData.annotatedFiles) {
-            file.content = file.content.replace(file.imports.join('\n'), file.finalImports.join('\n'));
+            if (file.imports.length > 0 && file.finalImports.length > 0) {
+                file.content = file.content.replace(file.imports.join('\n'), file.finalImports.join('\n'));
+            }
         }
     }
 
