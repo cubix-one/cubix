@@ -6,6 +6,14 @@ export const getFiles = (rootDir: string, extension: string = 'ts'): string[] =>
     return globSync(`${rootDir}/**/*.${extension}`).map(file => path.resolve(file));
 }
 
+export const getAllFiles = (rootDir: string): string[] => {
+    const normalFiles = globSync(`${rootDir}/**/*`, { dot: true, nodir: true });
+    const hiddenFiles = globSync(`${rootDir}/**/.*`, { dot: true, nodir: true });
+
+    return [...new Set([...normalFiles, ...hiddenFiles])]
+        .filter(file => !path.basename(file).startsWith('.git/'));
+}
+
 export const getFileName = (filePath: string): string => {
     return path.basename(filePath);
 }
