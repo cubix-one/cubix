@@ -15,20 +15,67 @@ export const setImportMap = (key: string, value: string[]): void => {
 export const getImportMap = (key?: string): string[] | Map<string, string[]> =>
     key ? importMap.get(key) || [] : importMap;
 
-export const annotationMap: { [key: string]: string } = {
-    'client_controller': 'cubix/client/controllers',
-    'client_service': 'cubix/client/services',
-    'client_component': 'cubix/client/components',
-    'ui_component': 'cubix/client/ui',
-    'client_inputs': 'cubix/client/inputs',
-    'event_listeners': 'cubix/client/eventListeners',
-    'server_controller': 'cubix/server/controllers',
-    'server_service': 'cubix/server/services',
-    'server_component': 'cubix/server/components',
-    'event_handlers': 'cubix/server/eventHandlers',
-    'shared_service': 'cubix/shared/services',
-    'shared_constants': 'cubix/shared/constants',
-    'shared_types': 'cubix/shared/types',
-    'shared_utils': 'cubix/shared/utils'
+export type IAnnotationMap = {
+    location: string;
+    prefix: 'client' | 'server' | 'shared';
+};
+
+export const annotationMap: { [key: string]: IAnnotationMap } = {
+    'client_controller': {
+        location: 'cubix/client/controllers',
+        prefix: 'client'
+    },
+    'client_service': {
+        location: 'cubix/client/services',
+        prefix: 'client'
+    },
+    'client_component': {
+        location: 'cubix/client/components',
+        prefix: 'client'
+    },
+    'ui_component': {
+        location: 'cubix/client/ui',
+        prefix: 'client'
+    },
+    'client_inputs': {
+        location: 'cubix/client/inputs',
+        prefix: 'client'
+    },
+    'event_listeners': {
+        location: 'cubix/client/eventListeners',
+        prefix: 'client'
+    },
+    'server_controller': {
+        location: 'cubix/server/controllers',
+        prefix: 'server'
+    },
+    'server_service': {
+        location: 'cubix/server/services',
+        prefix: 'server'
+    },
+    'server_component': {
+        location: 'cubix/server/components',
+        prefix: 'server'
+    },
+    'event_handlers': {
+        location: 'cubix/server/eventHandlers',
+        prefix: 'server'
+    },
+    'shared_service': {
+        location: 'cubix/shared/services',
+        prefix: 'shared'
+    },
+    'shared_constants': {
+        location: 'cubix/shared/constants',
+        prefix: 'shared'
+    },
+    'shared_types': {
+        location: 'cubix/shared/types',
+        prefix: 'shared'
+    },
+    'shared_utils': {
+        location: 'cubix/shared/utils',
+        prefix: 'shared'
+    }
 };
 
