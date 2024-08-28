@@ -6,6 +6,10 @@ export const getFiles = (rootDir: string, extension: string = 'ts'): string[] =>
     return globSync(`${rootDir}/**/*.${extension}`).map(file => path.resolve(file));
 }
 
+export const getFileName = (filePath: string): string => {
+    return path.basename(filePath);
+}
+
 export function readFile(filePath: string, encoding: BufferEncoding = 'utf8'): string {
     return fs.readFileSync(filePath, encoding);
 }
