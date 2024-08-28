@@ -48,6 +48,8 @@ export default class Watch {
             await this.handleFileChange(filePath);
         });
 
+        process.stdout.write('\x1Bc');
+
         p.intro(colors.bgGreen(` 👀 Watching for changes in ${colors.bgBlue(`[📂 ${colors.white(this.rootDir)}] `)}`));
         this.performUsecases();
     }
@@ -69,7 +71,7 @@ export default class Watch {
         await this.reorganizeUsecase.perform();
 
         try {
-            await execa(`rbxtsc -i ${this.outDir}/roblox`, { cwd: process.cwd() });
+            await execa(`rbxtsc`, { cwd: process.cwd() });
             p.log.success('🚀 Project compiled successfully');
         } catch (error: any) {
             p.log.error(`❌ Error compiling project: ${error.message}`);
