@@ -94,7 +94,25 @@ export default class CreateProject {
             await execa(command, { cwd: projectPath });
 
             const devDeps = devDependencies.join(' ');
-            await execa(`${packageManager} ${packageManager === 'npm' ? 'install' : 'add'} ${devDeps}`, { cwd: projectPath });
+            let packageManagerCommand;
+            switch (packageManager) {
+                case 'npm':
+                    packageManagerCommand = 'install --save-dev';
+                    break;
+                case 'yarn':
+                    packageManagerCommand = 'add --dev';
+                    break;
+                case 'pnpm':
+                    packageManagerCommand = 'add --save-dev';
+                    break;
+                case 'bun':
+                    packageManagerCommand = 'add --dev';
+                    break;
+                default:
+                    console.error(`Unsupported package manager: ${packageManager}`);
+                    process.exit(1);
+            }
+            await execa(`${packageManager} ${packageManagerCommand} ${devDeps}`, { cwd: projectPath });
         } catch (error: any) {
             console.error(`Error: ${error.message}`);
             process.exit(1);
