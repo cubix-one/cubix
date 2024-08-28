@@ -38,7 +38,7 @@ To install Cubix, you need to have Node.js and npm (or yarn) or Bun installed on
 > **RECOMMENDED**
 >
 >```bash
->bun install -g cubix
+>bun install -g cubix-one
 >```
 >.
 
