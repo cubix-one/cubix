@@ -34,5 +34,8 @@
     "glob": "^11.0.0",
     "picocolors": "^1.0.1",
     "simple-git": "^3.25.0"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
