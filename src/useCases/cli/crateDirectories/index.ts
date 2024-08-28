@@ -1,5 +1,5 @@
 import * as p from "@clack/prompts";
-import { annotationMap } from "@cli/constants/maps";
+import { annotationMap, IAnnotationMap } from "@cli/constants/maps";
 import { createDirectory } from "@utils/cli";
 
 export default class CreateDirectories {
@@ -8,8 +8,8 @@ export default class CreateDirectories {
     }
 
     public async perform() {
-        Object.values(annotationMap).forEach((value: string) => {
-            createDirectory(`${this.outputDir}/${value}`, true);
+        Object.values(annotationMap).forEach((value: IAnnotationMap) => {
+            createDirectory(`${this.outputDir}/${value.location}`, true);
         });
         //p.log.success('📁 Directories created');
     }
