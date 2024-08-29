@@ -20,9 +20,21 @@ export default class Reorganize {
     private updateImports(fileData: IFileData) {
         for (const file of fileData.annotatedFiles) {
             if (file.imports.length > 0 && file.finalImports.length > 0) {
-                file.content = file.content.replace(file.imports.join('\n'), file.finalImports.join('\n'));
+                const localImports = file.imports.filter(imp => this.isLocalImport(imp));
+                const externalImports = file.imports.filter(imp => !this.isLocalImport(imp));
+
+                const updatedLocalImports = file.finalImports.filter(imp => this.isLocalImport(imp));
+
+                const allImports = [...externalImports, ...updatedLocalImports].join('\n');
+
+                file.content = file.content.replace(file.imports.join('\n'), allImports);
             }
         }
+    }
+
+    private isLocalImport(importStatement: string): boolean {
+        // Verifica se o import é local (começa com './' ou '../')
+        return /from\s+['"]\.\.?\//.test(importStatement);
     }
 
     private createFiles(fileData: IFileData) {
