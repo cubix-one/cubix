@@ -1,6 +1,7 @@
 {
 	"recommendations": [
-		"roblox-ts.vscode-roblox-ts",
-		"dbaeumer.vscode-eslint"
+		"biomejs.biome",
+		"bungcip.better-toml",
+		"yoavbls.pretty-ts-errors"
 	]
 }
