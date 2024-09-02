@@ -3,11 +3,11 @@
     "compilerOptions": {
         "baseUrl": "./src",
         "paths": {
-            "@/*": ["/*"],
-            "@utils/*": ["utils/*"],
-            "@useCases/*": ["useCases/*"],
-            "@core/*": ["core/*"],
-            "@cli/*": ["cli/*"]
+            "@/*": ["./*"],
+            "@commands/*": ["./commands/*"],
+            "@core/*": ["./core/*"],
+            "@infrastructure/*": ["./infrastructure/*"],
+            "@services/*": ["./services/*"],
         },
         "rootDir": "./src",
         "outDir": "../../dist/apps/cli"

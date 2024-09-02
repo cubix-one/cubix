@@ -8,7 +8,7 @@ format = "cjs"
 
 [build.paths]
 "@/*" = "./src/*"
-"@utils/*" = "./src/utils/*"
-"@useCases/*" = "./src/useCases/*"
+"@commands/*" = "./src/commands/*"
 "@core/*" = "./src/core/*"
-"@cli/*" = "./src/cli/*"
+"@infrastructure/*" = "./src/infrastructure/*"
+"@services/*" = "./src/services/*"
