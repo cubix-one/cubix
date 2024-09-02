@@ -1,0 +1,29 @@
+{
+    "name": "@cubix-one/utils",
+    "version": "0.0.11",
+    "type": "module",
+    "main": "../../dist/packages/utils/index.js",
+    "module": "../../dist/packages/utils/index.js",
+    "types": "../../dist/packages/utils/index.d.ts",
+    "files": [
+        "../../dist/packages/utils"
+    ],
+    "scripts": {
+        "build": "bun build ./src/index.ts --outdir=../../dist/packages/utils --target=node --format=esm && tsc",
+        "prepublishOnly": "bun run build"
+    },
+    "devDependencies": {
+        "typescript": "^5.5.4",
+        "@types/fs-extra": "^11.0.4"
+    },
+    "peerDependencies": {
+        "typescript": "^5.5.4"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "dependencies": {
+        "fs-extra": "^11.2.0",
+        "glob": "^11.0.0"
+    }
+}
