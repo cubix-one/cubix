@@ -1,0 +1,16 @@
+{
+    "extends": "../../tsconfig.json",
+    "compilerOptions": {
+        "baseUrl": "./src",
+        "paths": {
+            "@/*": ["/*"],
+            "@utils/*": ["utils/*"],
+            "@useCases/*": ["useCases/*"],
+            "@core/*": ["core/*"],
+            "@cli/*": ["cli/*"]
+        },
+        "rootDir": "./src",
+        "outDir": "../../dist/apps/cli"
+    },
+    "include": ["src/**/*"]
+}
