@@ -1,13 +1,11 @@
 {
-    "name": "@cubix-one/definitions",
-    "version": "0.0.9",
+	"name": "@cubix-one/definitions",
+	"version": "0.0.9",
 	"type": "module",
 	"main": "../../dist/packages/definitions/index.js",
 	"module": "../../dist/packages/definitions/index.js",
 	"types": "../../dist/packages/definitions/index.d.ts",
-	"files": [
-		"../../dist/packages/definitions"
-	],
+	"files": ["../../dist/packages/definitions"],
 	"scripts": {
 		"build": "bun build ./src/index.ts --outdir=../../dist/packages/definitions --target=node --format=esm && tsc",
 		"prepublishOnly": "bun run build"
