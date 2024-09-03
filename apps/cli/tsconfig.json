@@ -1,16 +1,19 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "baseUrl": "./src",
-        "paths": {
-            "@/*": ["./*"],
-            "@commands/*": ["./commands/*"],
-            "@core/*": ["./core/*"],
-            "@infrastructure/*": ["./infrastructure/*"],
-            "@services/*": ["./services/*"],
-        },
-        "rootDir": "./src",
-        "outDir": "../../dist/apps/cli"
-    },
-    "include": ["src/**/*"]
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"baseUrl": "./src",
+		"paths": {
+			"@/*": ["./*"],
+			"@commands/*": ["./commands/*"],
+			"@core/*": ["./core/*"],
+			"@infrastructure/*": ["./infrastructure/*"],
+			"@services/*": ["./services/*"],
+			"@strategies/*": ["./strategies/*"],
+			"@types/*": ["./types/*"],
+			"@actions/*": ["./actions/*"]
+		},
+		"rootDir": "./src",
+		"outDir": "../../dist/apps/cli"
+	},
+	"include": ["src/**/*"]
 }

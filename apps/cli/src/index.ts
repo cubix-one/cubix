@@ -3,12 +3,11 @@ import initCommand from '@commands/init';
 import buildCommand from '@commands/build';
 import watchCommand from '@commands/watch';
 
-import color from 'picocolors'
+import color from 'picocolors';
 
 const program = new Command();
 
 const { version } = require('../package.json');
-
 
 const description = `
 \u250C ${color.bgBlack(color.bold('🧊 Cubix CLI 🧊'))}
@@ -18,10 +17,7 @@ const description = `
 \u2514 ${color.blue('👀 Watch changes in the project with auto build')}
 `;
 
-program
-  .name('cubix')
-  .version(version)
-  .description(description);
+program.name('cubix').version(version).description(description);
 
 program.addCommand(initCommand);
 program.addCommand(buildCommand);

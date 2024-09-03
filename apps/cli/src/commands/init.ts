@@ -1,6 +1,6 @@
 import { Command } from 'commander';
-import color from 'picocolors'
-
+import color from 'picocolors';
+import InitAction from '@actions/init';
 
 const description = `
 \u250C ${color.bgBlack(color.bold('🚀 Initialize a new project'))}
@@ -11,9 +11,10 @@ const description = `
 `;
 
 const initCommand = new Command('init')
+  .argument('[projectName]', 'The name of the project')
   .description(description)
-  .action(() => {
-    console.log('init');
+  .action((projectName: string) => {
+    InitAction(projectName);
   });
 
 export default initCommand;

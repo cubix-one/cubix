@@ -11,7 +11,10 @@
 	},
 	"javascript": {
 		"formatter": {
-			"quoteStyle": "single"
+			"quoteStyle": "single",
+			"indentWidth": 2,
+			"indentStyle": "space",
+			"lineWidth": 220
 		},
 		"parser": {
 			"unsafeParameterDecoratorsEnabled": false

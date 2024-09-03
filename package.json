@@ -1,28 +1,28 @@
 {
-  "name": "cubix-one",
-  "version": "0.6.2",
-  "description": "monorepo for cubix-one roblox framework",
-  "workspaces": ["apps/*", "packages/*"],
-  "scripts": {
-    "build:sync": "bun run build:packages:sync && bun run build:apps:sync",
-    "build": "concurrently -n 'utils,definitions,cli' -c 'blue,green,yellow' 'bun run build:utils' 'bun run build:definitions' 'bun run build:cli'",
-    "build:apps:sync": "bun run build:cli",
-    "build:cli": "cd apps/cli && bun run build",
-    "build:packages:sync": "bun run build:utils && bun run build:definitions",
-    "build:utils": "cd packages/utils && bun run build",
-    "build:definitions": "cd packages/definitions && bun run build",
-    "typecheck": "bunx --bun tsc",
-    "lint": "biome lint .",
-    "lint:fix": "biome lint --apply .",
-    "format": "biome format .",
-    "format:fix": "biome format --write ."
-  },
-  "devDependencies": {
-    "@biomejs/biome": "1.8.3",
-    "@types/bun": "latest",
-    "concurrently": "^8.2.2"
-  },
-  "peerDependencies": {
-    "typescript": "^5.5.4"
-  }
+	"name": "cubix-one",
+	"version": "0.6.2",
+	"description": "monorepo for cubix-one roblox framework",
+	"workspaces": ["apps/*", "packages/*"],
+	"scripts": {
+		"build:sync": "bun run build:packages:sync && bun run build:apps:sync",
+		"build": "concurrently -n 'utils,definitions,cli' -c 'blue,green,yellow' 'bun run build:utils' 'bun run build:definitions' 'bun run build:cli'",
+		"build:apps:sync": "bun run build:cli",
+		"build:cli": "cd apps/cli && bun run build",
+		"build:packages:sync": "bun run build:utils && bun run build:definitions",
+		"build:utils": "cd packages/utils && bun run build",
+		"build:definitions": "cd packages/definitions && bun run build",
+		"typecheck": "bunx --bun tsc",
+		"lint": "biome lint .",
+		"lint:fix": "biome lint --write .",
+		"format": "biome format .",
+		"format:fix": "biome format --write ."
+	},
+	"devDependencies": {
+		"@biomejs/biome": "1.8.3",
+		"@types/bun": "latest",
+		"concurrently": "^8.2.2"
+	},
+	"peerDependencies": {
+		"typescript": "^5.5.4"
+	}
 }
