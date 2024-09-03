@@ -1,3 +1,4 @@
+import ts from 'typescript';
 import fs from 'fs-extra';
 import path from 'node:path';
 import { globSync } from 'glob';
@@ -121,5 +122,17 @@ export class RealFileSystemStrategy implements FileSystemStrategy {
     } catch {
       return false;
     }
+  }
+
+  getPathDiffLevel(hightLevelPath: string, lowLevelPath: string): string {
+    const hightLevel = path.resolve(hightLevelPath);
+    const lowLevel = path.resolve(lowLevelPath);
+    const relativePath = path.relative(hightLevel, lowLevel);
+    return relativePath;
+  }
+
+  getSourceFile(filePath: string, encoding: BufferEncoding, scriptTarget: ts.ScriptTarget): ts.SourceFile {
+    const sourceCode = this.readFile(filePath, encoding) as string;
+    return ts.createSourceFile(filePath, sourceCode, scriptTarget, true);
   }
 }
