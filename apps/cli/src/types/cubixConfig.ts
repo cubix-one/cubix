@@ -24,7 +24,7 @@ export enum IAnnotationPrefix {
 /**
  * Enumeration that represents the possible core annotations.
  */
-const coreAnnotations = {
+export const CoreAnnotationsMap = {
   client_controller: { location: 'cubix/client/controllers', prefix: 'client' },
   client_component: { location: 'cubix/client/components', prefix: 'client' },
   client_module: { location: 'cubix/client/modules', prefix: 'module' },
@@ -39,12 +39,12 @@ const coreAnnotations = {
   shared_module: { location: 'cubix/shared/modules', prefix: 'module' },
 } as const;
 
-export type ICoreAnnotation = keyof typeof coreAnnotations;
-export const ICoreAnnotation = Object.keys(coreAnnotations) as ICoreAnnotation[];
+export type ICoreAnnotation = keyof typeof CoreAnnotationsMap;
+export const ICoreAnnotation = Object.keys(CoreAnnotationsMap) as ICoreAnnotation[];
 
-export const ICoreAnnotationLocation: Record<ICoreAnnotation, string> = Object.fromEntries(Object.entries(coreAnnotations).map(([key, value]) => [key, value.location])) as Record<ICoreAnnotation, string>;
+export const ICoreAnnotationLocation: Record<ICoreAnnotation, string> = Object.fromEntries(Object.entries(CoreAnnotationsMap).map(([key, value]) => [key, value.location])) as Record<ICoreAnnotation, string>;
 
-export const ICoreAnnotationPrefix: Record<ICoreAnnotation, string> = Object.fromEntries(Object.entries(coreAnnotations).map(([key, value]) => [key, value.prefix])) as Record<ICoreAnnotation, string>;
+export const ICoreAnnotationPrefix: Record<ICoreAnnotation, string> = Object.fromEntries(Object.entries(CoreAnnotationsMap).map(([key, value]) => [key, value.prefix])) as Record<ICoreAnnotation, string>;
 
 /**
  * Interface that represents the information for an annotation.
