@@ -1,5 +1,5 @@
 import { Command } from 'commander';
-import color from 'picocolors'
+import color from 'picocolors';
 
 const description = `
 \u250C ${color.bgBlack(color.bold('👀 Watch changes in the project'))}
@@ -8,10 +8,8 @@ const description = `
 \u2514 ${color.blue('Automatically build the project')}
 `;
 
-const watchCommand = new Command('watch')
-  .description(description)
-  .action(() => {
-    console.log('watch');
-  });
+const watchCommand = new Command('watch').description(description).action(() => {
+  console.log('watch');
+});
 
 export default watchCommand;
