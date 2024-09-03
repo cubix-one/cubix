@@ -1,5 +1,6 @@
 import { Command } from 'commander';
 import color from 'picocolors';
+import BuildAction from '@actions/build';
 
 const description = `
 \u250C ${color.bgBlack(color.bold('🔨 Build the project'))}
@@ -8,8 +9,6 @@ const description = `
 \u2514 ${color.blue('The project output will be in the output configured folder')}
 `;
 
-const buildCommand = new Command('build').description(description).action(() => {
-  console.log('build');
-});
+const buildCommand = new Command('build').description(description).action(BuildAction);
 
 export default buildCommand;
