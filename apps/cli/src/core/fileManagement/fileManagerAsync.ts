@@ -1,4 +1,5 @@
-import type { FileSystemStrategyAsync } from '../../types/strategies';
+import ts from 'typescript';
+import type { FileSystemStrategyAsync } from '@/types/strategies';
 import { RealFileSystemStrategyAsync } from '@/strategies/RealFileSystemStrategyAsync';
 import { FileManagerOptions } from './index';
 
@@ -67,5 +68,13 @@ export default class FileManagerAsync {
 
   public async deleteDirectory(dirPath: string): Promise<boolean> {
     return this.fileSystem.deleteDirectory(dirPath);
+  }
+
+  public async getPathDiffLevel(hightLevelPath: string, lowLevelPath: string): Promise<string> {
+    return this.fileSystem.getPathDiffLevel(hightLevelPath, lowLevelPath);
+  }
+
+  public async getSourceFile(filePath: string, encoding: BufferEncoding = 'utf-8', scriptTarget: ts.ScriptTarget = ts.ScriptTarget.ES2020): Promise<ts.SourceFile> {
+    return this.fileSystem.getSourceFile(filePath, encoding, scriptTarget);
   }
 }

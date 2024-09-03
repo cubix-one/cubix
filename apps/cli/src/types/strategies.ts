@@ -1,3 +1,5 @@
+import type ts from 'typescript';
+
 export interface FileSystemStrategyAsync {
   readFilesByExtension(contentPath: string, extension?: string): Promise<string[]>;
   readFiles(contentPath: string | null): Promise<string[]>;
@@ -13,6 +15,8 @@ export interface FileSystemStrategyAsync {
   directoryExists(path: string): Promise<boolean>;
   createDirectory(path: string, recursive?: boolean): Promise<boolean>;
   deleteDirectory(path: string): Promise<boolean>;
+  getPathDiffLevel(hightLevelPath: string, lowLevelPath: string): Promise<string>;
+  getSourceFile(filePath: string, encoding?: BufferEncoding, scriptTarget?: ts.ScriptTarget): Promise<ts.SourceFile>;
 }
 
 export interface FileSystemStrategy {
@@ -30,4 +34,6 @@ export interface FileSystemStrategy {
   directoryExists(path: string): boolean;
   createDirectory(path: string, recursive?: boolean): boolean;
   deleteDirectory(path: string): boolean;
+  getPathDiffLevel(hightLevelPath: string, lowLevelPath: string): string;
+  getSourceFile(filePath: string, encoding?: BufferEncoding, scriptTarget?: ts.ScriptTarget): ts.SourceFile;
 }

@@ -1,4 +1,5 @@
-import type { FileSystemStrategy } from '../../types/strategies';
+import ts from 'typescript';
+import type { FileSystemStrategy } from '@/types/strategies';
 import { RealFileSystemStrategy } from '@/strategies/RealFileSystemStrategy';
 import { FileManagerOptions } from './index';
 
@@ -73,5 +74,13 @@ export default class FileManagerSync {
 
   public deleteDirectory(dirPath: string): boolean {
     return this.fileSystem.deleteDirectory(dirPath);
+  }
+
+  public getPathDiffLevel(hightLevelPath: string, lowLevelPath: string): string {
+    return this.fileSystem.getPathDiffLevel(hightLevelPath, lowLevelPath);
+  }
+
+  public getSourceFile(filePath: string, encoding: BufferEncoding = 'utf-8', scriptTarget: ts.ScriptTarget = ts.ScriptTarget.ES2020): ts.SourceFile {
+    return this.fileSystem.getSourceFile(filePath, encoding, scriptTarget);
   }
 }

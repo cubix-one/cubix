@@ -1,3 +1,4 @@
+import ts from 'typescript';
 import fs from 'fs-extra';
 import path from 'node:path';
 import { glob } from 'glob';
@@ -95,5 +96,17 @@ export class RealFileSystemStrategyAsync implements FileSystemStrategyAsync {
       .remove(resolvedPath)
       .then(() => true)
       .catch(() => false);
+  }
+
+  async getPathDiffLevel(hightLevelPath: string, lowLevelPath: string): Promise<string> {
+    const hightLevel = await Promise.resolve(path.resolve(hightLevelPath));
+    const lowLevel = await Promise.resolve(path.resolve(lowLevelPath));
+    const relativePath = await Promise.resolve(path.relative(hightLevel, lowLevel));
+    return Promise.resolve(relativePath);
+  }
+
+  async getSourceFile(filePath: string, encoding: BufferEncoding, scriptTarget: ts.ScriptTarget): Promise<ts.SourceFile> {
+    const sourceCode = (await this.readFile(filePath, encoding)) as string;
+    return ts.createSourceFile(filePath, sourceCode, scriptTarget, true);
   }
 }
