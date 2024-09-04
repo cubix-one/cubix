@@ -10,7 +10,7 @@ import * as p from '@clack/prompts';
 
 const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
 
-export default async function BuildProject() {
+export default async function BuildProject(deleteAll = true): Promise<boolean> {
   const cubixConfig = await getCubixConfig();
   const internalTsConfigObj = await buildInternalTsConfig(cubixConfig.outDir);
   const internalRojoConfigObj = await buildRojoProjectConfig(cubixConfig);
@@ -20,17 +20,37 @@ export default async function BuildProject() {
 
   const outDirPath = path.join(process.cwd(), cubixConfig.outDir);
 
-  await deleteOutDir(outDirPath);
-  await createOutDir(outDirPath);
-  await writeInternalTsConfig(`${outDirPath}/tsconfig.json`, internalTsConfig);
-  await writeInternalRojoConfig(`${outDirPath}/default.project.json`, internalRojoConfig);
+  deleteAll ? await deleteOutDir(outDirPath) : await deleteOutDir(path.join(outDirPath, 'cubix'));
+
+  if (deleteAll) await createOutDir(outDirPath);
+
+  if (!deleteAll) {
+    if (!(await fs.fileExists(`${outDirPath}/tsconfig.json`))) {
+      await writeInternalTsConfig(`${outDirPath}/tsconfig.json`, internalTsConfig);
+    }
+    if (!(await fs.fileExists(`${outDirPath}/default.project.json`))) {
+      await writeInternalRojoConfig(`${outDirPath}/default.project.json`, internalRojoConfig);
+    }
+  } else {
+    await writeInternalTsConfig(`${outDirPath}/tsconfig.json`, internalTsConfig);
+    await writeInternalRojoConfig(`${outDirPath}/default.project.json`, internalRojoConfig);
+  }
 
   for (const annotation of Object.values(CoreAnnotationsMap)) {
     await fs.createDirectory(path.join(outDirPath, annotation.location), true);
   }
 
   await Reorganize(cubixConfig);
-  await execa('rbxtsc', ['-p', cubixConfig.outDir], { cwd: process.cwd() });
+
+  try {
+    await execa('rbxtsc', ['-p', cubixConfig.outDir], { cwd: process.cwd() });
+    if (!deleteAll) p.log.success('🚀 Project compiled successfully');
+    return true;
+    // biome-ignore lint/suspicious/noExplicitAny: <explanation>
+  } catch (error: any) {
+    p.log.error(`❌ Error compiling project: ${error.message}`);
+    return false;
+  }
 }
 
 const deleteOutDir = async (outDir: string) => await fs.deleteDirectory(outDir);
