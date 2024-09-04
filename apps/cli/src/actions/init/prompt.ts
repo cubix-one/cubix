@@ -7,6 +7,7 @@ export interface PromptOptions {
   packageManager: string;
   rootDir: string;
   outputDir: string;
+  template: 'eslint_prettier' | 'biome';
 }
 
 const fs = FileManager(FileManagerOptions.LOCAL);
@@ -21,6 +22,7 @@ export async function initPrompt(projectName: string): Promise<PromptOptions> {
       packageManager: promptPackageManager,
       rootDir: promptRootDir,
       outputDir: promptOutputDir,
+      template: promptTemplate,
     },
     { onCancel: promptOnCancel },
   )) as PromptOptions;
@@ -57,6 +59,17 @@ async function promptPackageManager() {
       { value: 'pnpm', label: 'pnpm' },
     ],
     initialValue: 'bun',
+  });
+}
+
+async function promptTemplate() {
+  return await p.select({
+    message: '📄 template',
+    options: [
+      { value: 'biome', label: 'Biome', hint: 'recommended' },
+      { value: 'eslint_prettier', label: 'ESLint + Prettier' },
+    ],
+    initialValue: 'biome',
   });
 }
 
