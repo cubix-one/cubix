@@ -107,6 +107,104 @@ export interface IProjectInfo {
    */
   license?: string;
 }
+
+/**
+ * Enumeration that represents the available watch types.
+ */
+export enum WatchType {
+  /**
+   * Watch all files in the directory.
+   */
+  Standard = 'standard',
+  /**
+   * Watch all files in the outDir directory and generate a hash of the file content. to detect changes.
+   */
+  Hash = 'hash',
+  /**
+   * Watch all files in the directory with a debounce time.
+   */
+  Debounce = 'debounce',
+}
+
+/**
+ * Enumeration that represents the available watch events.
+ */
+export enum WatchEvent {
+  /**
+   * Watch for all file events.
+   */
+  All = 'all',
+  /**
+   * Watch for file additions.
+   */
+  Add = 'add',
+
+  /**
+   * Watch for directory additions.
+   */
+  AddDir = 'addDir',
+
+  /**
+   * Watch for errors.
+   */
+  Error = 'error',
+
+  /**
+   * Watch for raw events.
+   */
+  Raw = 'raw',
+
+  /**
+   * Watch for the ready event.
+   */
+  Ready = 'ready',
+
+  /**
+   * Watch for file changes.
+   */
+  Change = 'change',
+  /**
+   * Watch for file deletions.
+   */
+  Unlink = 'unlink',
+
+  /**
+   * Watch for directory deletions.
+   */
+  UnlinkDir = 'unlinkDir',
+}
+
+/**
+ * Interface that represents the watch configuration. this overrides the cli default watch configuration.
+ */
+export interface IWatchConfig {
+  /**
+   * The type of watch to be used.
+   */
+  type: WatchType;
+
+  /**
+   * The file extensions to be watched.
+   */
+  extensions?: string[];
+
+  /**
+   * The debounce time in milliseconds.
+   * Only used when the type is Debounce.
+   */
+  debounceTime?: number;
+
+  /**
+   * The paths to be excluded from the watch.
+   */
+  exclude?: string[];
+
+  /**
+   * The events to be watched.
+   */
+  events?: WatchEvent[];
+}
+
 /**
  * Represents the configuration Json Schema for the Cubix CLI.
  */
@@ -122,4 +220,7 @@ export interface ICubixConfig {
   annotationOverrides?: {
     [key in ICoreAnnotation]?: IAnnotationInfo | undefined;
   };
+
+  /** Watch configuration. */
+  watch?: IWatchConfig;
 }
