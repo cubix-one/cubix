@@ -85,6 +85,8 @@ async function installDependencies(projectDir: string, options: PromptOptions) {
       '@types/bun',
       'cubix-one',
     ];
+  } else {
+    devDependencies = ['@biomejs/biome', '@rbxts/compiler-types', '@rbxts/services', '@rbxts/types', '@types/bun', 'cubix-one'];
   }
 
   try {
