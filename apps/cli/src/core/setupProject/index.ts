@@ -20,17 +20,17 @@ export async function setupProject(options: PromptOptions, spinnerReference: Ret
   const projectDir = path.join(process.cwd(), options.projectName);
   await fs.createDirectory(projectDir);
 
-  await cloneTemplate(projectDir);
+  await cloneTemplate(projectDir, options.template);
   await fs.createDirectory(path.join(projectDir, options.rootDir));
   await updateFlags(projectDir, options);
   await installDependencies(projectDir, options);
 }
 
-async function cloneTemplate(projectDir: string) {
+async function cloneTemplate(projectDir: string, branch: string) {
   spinner.message('Cloning template repository...');
   await simpleGit()
     .clone('https://github.com/cubix-one/template.git', projectDir, {
-      '--branch': 'main',
+      '--branch': branch,
     })
     .catch((error) => {
       handleError(ErrorCode.CLONE_TEMPLATE_ERROR, { outputError: error.message, exitProcess: true });
@@ -58,7 +58,7 @@ async function updateFlags(projectDir: string, options: PromptOptions) {
 }
 
 async function installDependencies(projectDir: string, options: PromptOptions) {
-  const { projectName, packageManager } = options;
+  const { projectName, packageManager, template } = options;
 
   spinner.message('Installing dependencies...');
 
@@ -68,7 +68,24 @@ async function installDependencies(projectDir: string, options: PromptOptions) {
 
   const command = getPackageManagerCommand(packageManager);
 
-  const devDependencies = ['@rbxts/compiler-types', '@rbxts/services', '@rbxts/types', '@types/bun', 'cubix-one'];
+  let devDependencies: string[] = [];
+
+  if (template === 'eslint_prettier') {
+    devDependencies = [
+      'eslint',
+      '@typescript-eslint/parser',
+      '@typescript-eslint/eslint-plugin',
+      'eslint-plugin-roblox-ts',
+      'prettier',
+      'eslint-plugin-prettier',
+      'eslint-config-prettier',
+      '@rbxts/compiler-types',
+      '@rbxts/services',
+      '@rbxts/types',
+      '@types/bun',
+      'cubix-one',
+    ];
+  }
 
   try {
     await execa(packageManager, ['install'], { cwd: projectDir });
