@@ -6,7 +6,7 @@ import simpleGit from 'simple-git';
 import { execa } from 'execa';
 
 import FileManager, { FileManagerOptions } from '@core/fileManagement';
-import type { PromptOptions } from './prompt';
+import type { PromptOptions } from '@actions/init/prompt';
 
 const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
 

@@ -2,7 +2,7 @@ import color from 'picocolors';
 import * as p from '@clack/prompts';
 import FileManager, { FileManagerOptions } from '@core/fileManagement';
 import { initPrompt } from './prompt';
-import { setupProject } from './setup';
+import { setupProject } from '@core/setupProject';
 
 const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
 const spinner = p.spinner();
