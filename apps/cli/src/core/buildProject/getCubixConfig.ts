@@ -1,6 +1,6 @@
 import path from 'node:path';
 import color from 'picocolors';
-import { type IAnnotationInfo, IAnnotationPrefix, ICoreAnnotation, type ICubixConfig, IRobloxLocation } from '@/types/cubixConfig';
+import { type IAnnotationInfo, IAnnotationPrefix, ICoreAnnotation, type ICubixConfig, IRobloxLocation, type IWatchConfig, WatchEvent, WatchType } from '@/types/cubixConfig';
 import FileManager, { FileManagerOptions } from '@core/fileManagement';
 import { handleError } from '@core/handleError';
 import { ErrorCode } from '@/types/errors';
@@ -32,6 +32,7 @@ async function validations(config: ICubixConfig) {
   await validationRequiredFields(config.rootDir, 'rootDir', true);
   await validationRequiredFields(config.outDir, 'outDir');
   await validationAnnotationOverrides(config.annotationOverrides as { [key in ICoreAnnotation]?: IAnnotationInfo | undefined });
+  await validationWatchConfig(config.watch as IWatchConfig);
 
   if (queueErrorMessages.length > 0) {
     doError();
@@ -79,6 +80,54 @@ async function validationAnnotationOverrides(annotationOverrides: { [key in ICor
           if (!validRobloxLocations.includes(annotation.robloxLocation as IRobloxLocation)) {
             addErrorMessage(ErrorCode.CUBIX_CONFIG_INVALID_ROBLOX_LOCATION, `${color.inverse(annotation.robloxLocation)} is not a valid Roblox location. A valid location is`, validRobloxLocations);
           }
+        }
+      }
+    }
+  }
+}
+
+async function validationWatchConfig(watch: IWatchConfig) {
+  if (watch) {
+    if (watch.type) {
+      const validWatchTypes = Object.values(WatchType);
+      if (!validWatchTypes.includes(watch.type as WatchType)) {
+        addErrorMessage(ErrorCode.CUBIX_CONFIG_INVALID_WATCH_TYPE, `${color.inverse(watch.type)} is not a valid watch type. A valid watch type is`, validWatchTypes);
+      }
+
+      if (watch.type === WatchType.Debounce) {
+        if (watch.debounceTime && typeof watch.debounceTime !== 'number') {
+          addErrorMessage(ErrorCode.WATCH_INVALID_DEBOUNCE_TIME, `${color.inverse(watch.debounceTime)} is not a valid debounce time. A valid debounce time is a number`);
+        }
+        if (watch.debounceTime && !Number.isInteger(watch.debounceTime)) {
+          addErrorMessage(ErrorCode.WATCH_INVALID_DEBOUNCE_TIME, `${color.inverse(watch.debounceTime)} is not a valid debounce time. The debounce time must be an integer`);
+        }
+
+        if (!watch.debounceTime || watch.debounceTime <= 0) {
+          addErrorMessage(ErrorCode.WATCH_INVALID_DEBOUNCE_TIME, 'debounceTime is required when watch type is debounce');
+        }
+      }
+    }
+
+    if (watch.extensions) {
+      if (!Array.isArray(watch.extensions)) {
+        addErrorMessage(ErrorCode.WATCH_INVALID_EXTENSIONS, `${color.inverse(watch.extensions)} is not a valid extensions. The extensions must be provided as an array of strings`);
+      } else {
+        const validExtensions = watch.extensions.map((extension) => extension.toLowerCase());
+        const invalidExtensions = validExtensions.filter((extension) => extension.startsWith('.'));
+        if (invalidExtensions.length > 0) {
+          addErrorMessage(ErrorCode.WATCH_INVALID_EXTENSIONS, `${color.inverse(invalidExtensions.join(', '))} are not valid extensions. Extension must not start with a dot (.)`);
+        }
+      }
+    }
+
+    if (watch.events) {
+      if (!Array.isArray(watch.events)) {
+        addErrorMessage(ErrorCode.WATCH_INVALID_EVENTS, `${color.inverse(watch.events)} is not a valid events. The events must be provided as an array of strings`);
+      } else {
+        const validEvents = Object.values(WatchEvent);
+        const invalidEvents = watch.events.filter((event) => !validEvents.includes(event as WatchEvent));
+        if (invalidEvents.length > 0) {
+          addErrorMessage(ErrorCode.WATCH_INVALID_EVENTS, `${color.inverse(invalidEvents.join(', '))} are not valid events. A valid event is`, validEvents);
         }
       }
     }
