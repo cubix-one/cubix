@@ -31,8 +31,6 @@ export default async function BuildProject() {
 
   await Reorganize(cubixConfig);
   await execa('rbxtsc', ['-p', cubixConfig.outDir], { cwd: process.cwd() });
-
-  p.log.success('🚀 Project compiled successfully');
 }
 
 const deleteOutDir = async (outDir: string) => await fs.deleteDirectory(outDir);
