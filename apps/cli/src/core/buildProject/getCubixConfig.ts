@@ -1,12 +1,14 @@
 import path from 'node:path';
+import color from 'picocolors';
 import { type IAnnotationInfo, IAnnotationPrefix, ICoreAnnotation, type ICubixConfig, IRobloxLocation } from '@/types/cubixConfig';
 import FileManager, { FileManagerOptions } from '@core/fileManagement';
-import color from 'picocolors';
+import { handleError } from '@core/handleError';
+import { ErrorCode } from '@/types/errors';
 
 const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
 
-const queueErrorMessages: string[] = [];
-const addErrorMessage = (message: string) => queueErrorMessages.push(message);
+const queueErrorMessages: { code: ErrorCode; message?: string; dataList?: string[] }[] = [];
+const addErrorMessage = (code: ErrorCode, message?: string, dataList?: string[]) => queueErrorMessages.push({ code, message: message || '', dataList: dataList || [] });
 
 export async function getCubixConfig(): Promise<ICubixConfig> {
   const configFile = await getCubixConfigFile();
@@ -20,8 +22,7 @@ export async function getCubixConfig(): Promise<ICubixConfig> {
 async function getCubixConfigFile() {
   const configPath = path.join(process.cwd(), 'cubix.config.json');
   if (!(await fs.fileExists(configPath))) {
-    addErrorMessage(`${color.inverse('cubix.config.json')} does not exist`);
-    doError();
+    handleError(ErrorCode.CUBIX_CONFIG_NOT_FOUND, { outputError: color.inverse('cubix.config.json'), exitProcess: true });
   }
   const configFile = (await fs.readFile(configPath)) as string;
   return configFile;
@@ -39,15 +40,15 @@ async function validations(config: ICubixConfig) {
 
 async function validationRequiredFields(fieldValue: string, fieldName: string, validateDirectory = false) {
   if (!fieldValue) {
-    addErrorMessage(`${fieldName} is required`);
+    addErrorMessage(ErrorCode.CUBIX_CONFIG_REQUIRED_FIELD, `${fieldName} is required`);
   } else {
     if (fieldValue === '') {
-      addErrorMessage(`${fieldName} cannot be empty`);
+      addErrorMessage(ErrorCode.CUBIX_CONFIG_REQUIRED_FIELD, `${fieldName} cannot be empty`);
     }
     if (validateDirectory) {
       const directoryExists = await fs.directoryExists(path.resolve(process.cwd(), fieldValue));
       if (!directoryExists) {
-        addErrorMessage(`${fieldName} ${color.inverse(fieldValue)} does not exist`);
+        addErrorMessage(ErrorCode.CUBIX_CONFIG_REQUIRED_FIELD, `${fieldName} ${color.inverse(fieldValue)} does not exist`);
       }
     }
   }
@@ -60,7 +61,7 @@ async function validationAnnotationOverrides(annotationOverrides: { [key in ICor
 
     for (const annotation of annotationKeys) {
       if (!ICoreAnnotation.includes(annotation as ICoreAnnotation)) {
-        addErrorMessage(`${color.inverse(annotation)} is not a core valid annotation to override. A valid annotation is \n\n-> ${ICoreAnnotation.join('\n-> ')}`);
+        addErrorMessage(ErrorCode.CUBIX_CONFIG_INVALID_ANNOTATION_OVERRIDE, `${color.inverse(annotation)} is not a valid core annotation to override. A valid annotation is`, Object.values(ICoreAnnotation));
       }
     }
 
@@ -69,14 +70,14 @@ async function validationAnnotationOverrides(annotationOverrides: { [key in ICor
         if (annotation.prefix) {
           const validAnnotationPrefixes = Object.values(IAnnotationPrefix);
           if (!validAnnotationPrefixes.includes(annotation.prefix as IAnnotationPrefix)) {
-            addErrorMessage(`${color.inverse(annotation.prefix)} is not a valid prefix. A valid prefix is \n\n-> ${validAnnotationPrefixes.join('\n-> ')}`);
+            addErrorMessage(ErrorCode.CUBIX_CONFIG_INVALID_ANNOTATION_PREFIX, `${color.inverse(annotation.prefix)} is not a valid prefix. A valid prefix is`, validAnnotationPrefixes);
           }
         }
 
         if (annotation.robloxLocation) {
           const validRobloxLocations = Object.values(IRobloxLocation);
           if (!validRobloxLocations.includes(annotation.robloxLocation as IRobloxLocation)) {
-            addErrorMessage(`${color.inverse(annotation.robloxLocation)} is not a valid Roblox location. A valid location is \n\n-> ${validRobloxLocations.join('\n-> ')}`);
+            addErrorMessage(ErrorCode.CUBIX_CONFIG_INVALID_ROBLOX_LOCATION, `${color.inverse(annotation.robloxLocation)} is not a valid Roblox location. A valid location is`, validRobloxLocations);
           }
         }
       }
@@ -86,7 +87,7 @@ async function validationAnnotationOverrides(annotationOverrides: { [key in ICor
 
 function doError() {
   for (const message of queueErrorMessages) {
-    console.error(`[ERROR] (${color.bold('cubix.config.json')})\n[MESSAGE] - ${message}`);
+    handleError(message.code, { customMessage: message.message, listData: message.dataList });
   }
   process.exit(1);
 }
