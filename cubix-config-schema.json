@@ -1,222 +1,205 @@
 {
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "$ref": "#/definitions/ICubixConfig",
-  "definitions": {
-    "ICubixConfig": {
-      "type": "object",
-      "properties": {
-        "projectInfo": {
-          "$ref": "#/definitions/IProjectInfo",
-          "description": "The information of the project."
-        },
-        "rootDir": {
-          "type": "string",
-          "description": "The root code directory of the project."
-        },
-        "outDir": {
-          "type": "string",
-          "description": "The output directory of the project."
-        },
-        "annotationOverrides": {
-          "type": "object",
-          "properties": {
-            "client_controller": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "client_component": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "client_module": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "ui_component": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "server_controller": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "server_component": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "server_module": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "event_handlers": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "shared_constants": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "shared_types": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "shared_utils": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            },
-            "shared_module": {
-              "$ref": "#/definitions/IAnnotationInfo"
-            }
-          },
-          "additionalProperties": false,
-          "description": "Override the default annotations for a custom annotation."
-        },
-        "watch": {
-          "$ref": "#/definitions/IWatchConfig",
-          "description": "Watch configuration."
-        }
-      },
-      "required": [
-        "rootDir",
-        "outDir"
-      ],
-      "additionalProperties": false,
-      "description": "Represents the configuration Json Schema for the Cubix CLI."
-    },
-    "IProjectInfo": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The name of the project.",
-          "default": "cubix-game"
-        },
-        "version": {
-          "type": "string",
-          "description": "The version of the project.",
-          "default": "1.0.0"
-        },
-        "description": {
-          "type": "string",
-          "description": "The description of the project.",
-          "default": "A new Cubix project."
-        },
-        "author": {
-          "type": "string",
-          "description": "The author of the project.",
-          "default": "game made by cubix framework"
-        },
-        "license": {
-          "type": "string",
-          "description": "The license of the project.",
-          "default": "MIT"
-        }
-      },
-      "additionalProperties": false,
-      "description": "Interface that represents the information of the project."
-    },
-    "IAnnotationInfo": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string",
-          "description": "The name of the annotation."
-        },
-        "location": {
-          "type": "string",
-          "description": "The location of the annotation. This is the path to the folder where the script will be created."
-        },
-        "prefix": {
-          "$ref": "#/definitions/IAnnotationPrefix",
-          "description": "The prefix of the annotation."
-        },
-        "robloxLocation": {
-          "$ref": "#/definitions/IRobloxLocation",
-          "description": "The Roblox location of the annotation. This is the path to the folder where the script will be created in Roblox Studio."
-        }
-      },
-      "required": [
-        "name",
-        "location",
-        "prefix"
-      ],
-      "additionalProperties": false,
-      "description": "Interface that represents the information for an annotation."
-    },
-    "IAnnotationPrefix": {
-      "type": "string",
-      "enum": [
-        "client",
-        "server",
-        "shared"
-      ],
-      "description": "Enumeration that represents the possible prefixes for annotations."
-    },
-    "IRobloxLocation": {
-      "type": "string",
-      "enum": [
-        "ReplicatedStorage",
-        "ServerStorage",
-        "StarterPack",
-        "StarterPlayer",
-        "StarterPlayerScripts",
-        "StarterCharacterScripts",
-        "StarterCharacter",
-        "StarterOutfit"
-      ],
-      "description": "Enumeration that represents the possible locations in Roblox."
-    },
-    "IWatchConfig": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "$ref": "#/definitions/WatchType",
-          "description": "The type of watch to be used."
-        },
-        "extensions": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "The file extensions to be watched."
-        },
-        "debounceTime": {
-          "type": "number",
-          "description": "The debounce time in milliseconds. Only used when the type is Debounce."
-        },
-        "exclude": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          },
-          "description": "The paths to be excluded from the watch."
-        },
-        "events": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/WatchEvent"
-          },
-          "description": "The events to be watched."
-        }
-      },
-      "required": [
-        "type"
-      ],
-      "additionalProperties": false,
-      "description": "Interface that represents the watch configuration. this overrides the cli default watch configuration."
-    },
-    "WatchType": {
-      "type": "string",
-      "enum": [
-        "standard",
-        "hash",
-        "debounce"
-      ],
-      "description": "Enumeration that represents the available watch types."
-    },
-    "WatchEvent": {
-      "type": "string",
-      "enum": [
-        "all",
-        "add",
-        "addDir",
-        "error",
-        "raw",
-        "ready",
-        "change",
-        "unlink",
-        "unlinkDir"
-      ],
-      "description": "Enumeration that represents the available watch events."
-    }
-  }
+	"$schema": "http://json-schema.org/draft-07/schema#",
+	"$ref": "#/definitions/ICubixConfig",
+	"definitions": {
+		"ICubixConfig": {
+			"type": "object",
+			"properties": {
+				"projectInfo": {
+					"$ref": "#/definitions/IProjectInfo",
+					"description": "The information of the project."
+				},
+				"rootDir": {
+					"type": "string",
+					"description": "The root code directory of the project."
+				},
+				"outDir": {
+					"type": "string",
+					"description": "The output directory of the project."
+				},
+				"annotationOverrides": {
+					"type": "object",
+					"properties": {
+						"client_controller": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"client_component": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"client_module": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"ui_component": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"server_controller": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"server_component": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"server_module": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"event_handlers": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"shared_constants": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"shared_types": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"shared_utils": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						},
+						"shared_module": {
+							"$ref": "#/definitions/IAnnotationInfo"
+						}
+					},
+					"additionalProperties": false,
+					"description": "Override the default annotations for a custom annotation."
+				},
+				"watch": {
+					"$ref": "#/definitions/IWatchConfig",
+					"description": "Watch configuration."
+				}
+			},
+			"required": ["rootDir", "outDir"],
+			"additionalProperties": false,
+			"description": "Represents the configuration Json Schema for the Cubix CLI."
+		},
+		"IProjectInfo": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "The name of the project.",
+					"default": "cubix-game"
+				},
+				"version": {
+					"type": "string",
+					"description": "The version of the project.",
+					"default": "1.0.0"
+				},
+				"description": {
+					"type": "string",
+					"description": "The description of the project.",
+					"default": "A new Cubix project."
+				},
+				"author": {
+					"type": "string",
+					"description": "The author of the project.",
+					"default": "game made by cubix framework"
+				},
+				"license": {
+					"type": "string",
+					"description": "The license of the project.",
+					"default": "MIT"
+				}
+			},
+			"additionalProperties": false,
+			"description": "Interface that represents the information of the project."
+		},
+		"IAnnotationInfo": {
+			"type": "object",
+			"properties": {
+				"name": {
+					"type": "string",
+					"description": "The name of the annotation."
+				},
+				"location": {
+					"type": "string",
+					"description": "The location of the annotation. This is the path to the folder where the script will be created."
+				},
+				"prefix": {
+					"$ref": "#/definitions/IAnnotationPrefix",
+					"description": "The prefix of the annotation."
+				},
+				"robloxLocation": {
+					"$ref": "#/definitions/IRobloxLocation",
+					"description": "The Roblox location of the annotation. This is the path to the folder where the script will be created in Roblox Studio."
+				}
+			},
+			"required": ["name", "location", "prefix"],
+			"additionalProperties": false,
+			"description": "Interface that represents the information for an annotation."
+		},
+		"IAnnotationPrefix": {
+			"type": "string",
+			"enum": ["client", "server", "shared"],
+			"description": "Enumeration that represents the possible prefixes for annotations."
+		},
+		"IRobloxLocation": {
+			"type": "string",
+			"enum": [
+				"ReplicatedStorage",
+				"ServerStorage",
+				"StarterPack",
+				"StarterPlayer",
+				"StarterPlayerScripts",
+				"StarterCharacterScripts",
+				"StarterCharacter",
+				"StarterOutfit"
+			],
+			"description": "Enumeration that represents the possible locations in Roblox."
+		},
+		"IWatchConfig": {
+			"type": "object",
+			"properties": {
+				"type": {
+					"$ref": "#/definitions/WatchType",
+					"description": "The type of watch to be used."
+				},
+				"extensions": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "The file extensions to be watched."
+				},
+				"debounceTime": {
+					"type": "number",
+					"description": "The debounce time in milliseconds. Only used when the type is Debounce."
+				},
+				"exclude": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					},
+					"description": "The paths to be excluded from the watch."
+				},
+				"events": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/WatchEvent"
+					},
+					"description": "The events to be watched."
+				}
+			},
+			"required": ["type"],
+			"additionalProperties": false,
+			"description": "Interface that represents the watch configuration. this overrides the cli default watch configuration."
+		},
+		"WatchType": {
+			"type": "string",
+			"enum": ["standard", "hash", "debounce"],
+			"description": "Enumeration that represents the available watch types."
+		},
+		"WatchEvent": {
+			"type": "string",
+			"enum": [
+				"all",
+				"add",
+				"addDir",
+				"error",
+				"raw",
+				"ready",
+				"change",
+				"unlink",
+				"unlinkDir"
+			],
+			"description": "Enumeration that represents the available watch events."
+		}
+	}
 }
