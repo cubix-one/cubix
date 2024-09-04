@@ -68,7 +68,7 @@ async function installDependencies(projectDir: string, options: PromptOptions) {
 
   const command = getPackageManagerCommand(packageManager);
 
-  const devDependencies = ['@rbxts/compiler-types', '@rbxts/services', '@rbxts/types', '@types/bun', 'reflect-metadata', 'cubix-one'];
+  const devDependencies = ['@rbxts/compiler-types', '@rbxts/services', '@rbxts/types', '@types/bun', 'cubix-one'];
 
   try {
     await execa(packageManager, ['install'], { cwd: projectDir });
