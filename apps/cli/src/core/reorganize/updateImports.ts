@@ -1,6 +1,6 @@
 import path from 'node:path';
 import type { IAnnotatedFile } from './dataFiles';
-import FileManager, { FileManagerOptions } from '@/core/fileManagement';
+import FileManager, { FileManagerOptions } from '@core/fileManagement';
 
 const fs = FileManager(FileManagerOptions.LOCAL);
 

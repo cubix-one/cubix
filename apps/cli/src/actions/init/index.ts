@@ -2,13 +2,15 @@ import color from 'picocolors';
 import * as p from '@clack/prompts';
 import FileManager, { FileManagerOptions } from '@core/fileManagement';
 import { initPrompt } from './prompt';
-import { setupProject } from './setup';
+import { setupProject } from '@core/setupProject';
+import { handleError } from '@core/handleError';
+import { ErrorCode } from '@/types/errors';
 
 const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
 const spinner = p.spinner();
 
 export default async function InitAction(projectName: string) {
-  if (await fs.directoryExists(projectName)) process.exit(1);
+  if (await fs.directoryExists(projectName)) handleError(ErrorCode.DIRECTORY_ALREADY_EXISTS, { outputError: color.inverse(projectName), exitProcess: true });
 
   const options = await initPrompt(projectName);
 

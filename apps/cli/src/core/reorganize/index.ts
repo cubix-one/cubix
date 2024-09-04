@@ -1,6 +1,6 @@
 import type { ICubixConfig } from '@/types/cubixConfig';
 import { getDataFiles } from './dataFiles';
-import FileManager, { FileManagerOptions } from '@/core/fileManagement';
+import FileManager, { FileManagerOptions } from '@core/fileManagement';
 
 const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
 

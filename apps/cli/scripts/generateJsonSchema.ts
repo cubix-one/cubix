@@ -12,7 +12,7 @@ const config = {
   strictTuples: true,
 };
 
-const outputPath = path.resolve(__dirname, '../../../dist/apps/cli/cubix-config-schema.json');
+const outputPath = path.resolve(__dirname, '../../../cubix-config-schema.json');
 
 const schema = tsj.createGenerator(config).createSchema(config.type);
 const schemaString = JSON.stringify(schema, null, 2);
