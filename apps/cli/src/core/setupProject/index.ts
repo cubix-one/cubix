@@ -5,16 +5,19 @@ import { devDependencies } from '@cubix-one/definitions/src/index';
 import simpleGit from 'simple-git';
 import { execa } from 'execa';
 
+import { ErrorCode } from '@/types/errors';
+import { handleError } from '@core/handleError';
+
 import FileManager, { FileManagerOptions } from '@core/fileManagement';
 import type { PromptOptions } from '@actions/init/prompt';
 
 const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
-
 let spinner: ReturnType<typeof p.spinner>;
 
 export async function setupProject(options: PromptOptions, spinnerReference: ReturnType<typeof p.spinner>) {
   spinner = spinnerReference;
   spinner.start('Creating project directory...');
+
   const projectDir = path.join(process.cwd(), options.projectName);
   await fs.createDirectory(projectDir);
 
@@ -31,8 +34,7 @@ async function cloneTemplate(projectDir: string) {
       '--branch': 'main',
     })
     .catch((error) => {
-      console.error(`[ERROR] - Failed to clone template repository: ${error.message}`);
-      process.exit(1);
+      handleError(ErrorCode.CLONE_TEMPLATE_ERROR, { outputError: error.message, exitProcess: true });
     });
   spinner.message('Template repository cloned successfully');
 }
@@ -62,8 +64,7 @@ async function installDependencies(projectDir: string, options: PromptOptions) {
   spinner.message('Installing dependencies...');
 
   if (!(await fs.fileExists(path.join(projectDir, 'package.json')))) {
-    console.error(`[ERROR] - ${color.inverse(projectName)} does not contain a ${color.inverse('package.json')} file`);
-    process.exit(1);
+    handleError(ErrorCode.PACKAGE_JSON_NOT_FOUND, { exitProcess: true });
   }
 
   const command = getPackageManagerCommand(packageManager);
@@ -75,8 +76,7 @@ async function installDependencies(projectDir: string, options: PromptOptions) {
     });
     // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   } catch (error: any) {
-    console.error(`Failed to install dependencies: ${error.message}`);
-    process.exit(1);
+    handleError(ErrorCode.INSTALL_DEPENDENCIES_ERROR, { outputError: error.message, exitProcess: true });
   }
 }
 
@@ -91,15 +91,7 @@ function getPackageManagerCommand(packageManager: string): string[] {
     case 'bun':
       return ['add', '--dev'];
     default:
-      console.error(`Unsupported package manager: ${color.inverse(packageManager)}`);
+      handleError(ErrorCode.UNSUPPORTED_PACKAGE_MANAGER, { outputError: color.inverse(packageManager), exitProcess: true });
       return [];
   }
-}
-
-async function directoryExists(projectName: string): Promise<boolean> {
-  if (await fs.directoryExists(projectName)) {
-    console.error(`[ERROR] - ${color.inverse(projectName)} already exists in the current directory`);
-    return true;
-  }
-  return false;
 }
