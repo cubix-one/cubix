@@ -11,7 +11,7 @@
 		"build": "bun run build:cli && bun run build:schema && bun run copyBin",
 		"copyBin": "bun scripts/copyBin.ts",
 		"build:cli": "bun build ./src/index.ts --outdir=../../dist/apps/cli --target=node",
-		"build:schema": "mkdir -p ../../dist/apps/cli && bun scripts/generateJsonSchema.ts"
+		"build:schema": "bun scripts/generateJsonSchema.ts"
 	},
 	"devDependencies": {
 		"@clack/prompts": "^0.7.0",
@@ -24,8 +24,6 @@
 		"typescript": "^5.5.4"
 	},
 	"dependencies": {
-		"@cubix-one/definitions": "workspace:*",
-		"@cubix-one/utils": "workspace:*",
 		"chokidar": "^3.6.0",
 		"commander": "^12.1.0",
 		"execa": "^9.3.1",
