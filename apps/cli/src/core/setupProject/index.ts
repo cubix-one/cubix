@@ -1,7 +1,6 @@
 import path from 'node:path';
 import type * as p from '@clack/prompts';
 import color from 'picocolors';
-import { devDependencies } from '@cubix-one/definitions/src/index';
 import simpleGit from 'simple-git';
 import { execa } from 'execa';
 
@@ -68,6 +67,8 @@ async function installDependencies(projectDir: string, options: PromptOptions) {
   }
 
   const command = getPackageManagerCommand(packageManager);
+
+  const devDependencies = ['@rbxts/compiler-types', '@rbxts/services', '@rbxts/types', '@types/bun', 'reflect-metadata', 'cubix-one'];
 
   try {
     await execa(packageManager, ['install'], { cwd: projectDir });
