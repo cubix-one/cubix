@@ -1,5 +1,6 @@
 import chokidar from 'chokidar';
 import type { WatchFilesProps } from '@core/watchFiles';
+import * as p from '@clack/prompts';
 
 export default function debounceWatch(props: WatchFilesProps, callback: (event: string, filePath: string) => Promise<void>) {
   const { path: watchPath, extensions, exclude, events, debounceTime } = props;
@@ -41,11 +42,11 @@ export default function debounceWatch(props: WatchFilesProps, callback: (event: 
     });
   }
 
-  // Tratamento de sinais para encerramento gracioso
   process.on('SIGINT', () => {
-    console.log('Encerrando o watcher...');
+    const spinner = p.spinner();
+    spinner.start('Closing Watcher...');
     watcher.close().then(() => {
-      console.log('Watcher encerrado. Saindo...');
+      spinner.stop('Watcher closed. Exit...');
       process.exit(0);
     });
   });

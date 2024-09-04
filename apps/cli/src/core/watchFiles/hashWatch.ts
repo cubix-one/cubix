@@ -1,6 +1,7 @@
 import chokidar from 'chokidar';
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
+import * as p from '@clack/prompts';
 import type { WatchFilesProps } from '@core/watchFiles';
 
 interface FileHash {
@@ -48,11 +49,11 @@ export default function hashWatch(props: WatchFilesProps, callback: (event: stri
     });
   }
 
-  // Tratamento de sinais para encerramento gracioso
   process.on('SIGINT', () => {
-    console.log('Encerrando o watcher...');
+    const spinner = p.spinner();
+    spinner.start('Closing Watcher...');
     watcher.close().then(() => {
-      console.log('Watcher encerrado. Saindo...');
+      spinner.stop('Watcher closed. Exit...');
       process.exit(0);
     });
   });
