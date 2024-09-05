@@ -1,19 +1,29 @@
+import path from 'node:path';
+import { ErrorCode } from '@/types/errors';
 import { getCubixConfig } from '@core/buildProject/getCubixConfig';
 import type { Subprocess } from 'bun';
+import FileManager, { FileManagerOptions } from '../fileManagement';
 import { handleError } from '../handleError';
-import { ErrorCode } from '@/types/errors';
 
 export interface IRojoAddress {
   ip: string;
   port: number;
 }
 
+const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
+
 export default async function RojoServer(projectPath: string, props?: { port: number; address: string }): Promise<IRojoAddress> {
   const { port, address } = props || {};
   const cubixConfig = await getCubixConfig();
-  const path = projectPath || cubixConfig.outDir;
+  const pathToProject = projectPath || cubixConfig.outDir;
 
-  let runCommand = ['rojo.exe', 'serve', path];
+  const pathRojo = path.join(process.cwd(), 'node_modules', 'cubix-one', 'dist', 'apps', 'cli', 'rojo.exe');
+
+  if (!(await fs.fileExists(pathRojo))) {
+    throw handleError(ErrorCode.ROJO_SERVER_NOT_FOUND_ERROR, { exitProcess: true });
+  }
+
+  let runCommand = [pathRojo, 'serve', pathToProject];
   if (port) runCommand = [...runCommand, '--port', port.toString()];
   if (address) runCommand = [...runCommand, '--address', address];
 
