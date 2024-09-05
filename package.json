@@ -3,6 +3,9 @@
 	"version": "0.6.2",
 	"description": "monorepo for cubix-one roblox framework",
 	"workspaces": ["apps/*", "packages/*"],
+	"bin": {
+		"cubix": "dist/cli/index.js"
+	},
 	"scripts": {
 		"build:sync": "bun run build:packages:sync && bun run build:apps:sync",
 		"build": "concurrently -n 'cli' -c 'blue' 'bun run build:cli'",
@@ -22,5 +25,9 @@
 	},
 	"peerDependencies": {
 		"typescript": "^5.5.4"
-	}
+	},
+	"files": [
+		"dist/apps/cli/index.js",
+		"dist/apps/cli/rojo.exe"
+	]
 }
