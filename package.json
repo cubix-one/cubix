@@ -1,10 +1,10 @@
 {
 	"name": "cubix-one",
-	"version": "0.6.2",
+	"version": "0.6.3",
 	"description": "monorepo for cubix-one roblox framework",
 	"workspaces": ["apps/*", "packages/*"],
 	"bin": {
-		"cubix": "dist/cli/index.js"
+		"cubix": "dist/apps/cli/index.js"
 	},
 	"scripts": {
 		"build:sync": "bun run build:packages:sync && bun run build:apps:sync",
