@@ -5,12 +5,16 @@ import { initPrompt } from './prompt';
 import { setupProject } from '@core/setupProject';
 import { handleError } from '@core/handleError';
 import { ErrorCode } from '@/types/errors';
+import path from 'node:path';
 
 const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
 const spinner = p.spinner();
 
 export default async function InitAction(projectName: string) {
-  if (await fs.directoryExists(projectName)) handleError(ErrorCode.DIRECTORY_ALREADY_EXISTS, { outputError: color.inverse(projectName), exitProcess: true });
+  if (projectName) {
+    const existDirectory = await fs.directoryExists(projectName);
+    if (existDirectory) handleError(ErrorCode.DIRECTORY_ALREADY_EXISTS, { outputError: color.inverse(projectName), exitProcess: true });
+  }
 
   const options = await initPrompt(projectName);
 
