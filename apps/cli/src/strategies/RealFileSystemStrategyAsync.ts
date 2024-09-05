@@ -53,7 +53,7 @@ export class RealFileSystemStrategyAsync implements FileSystemStrategyAsync {
 
   async fileExists(filePath: string): Promise<boolean> {
     const resolvedPath = path.resolve(filePath);
-    return fs.pathExists(resolvedPath);
+    return await fs.pathExists(resolvedPath);
   }
 
   async fileName(filePath: string): Promise<string> {
@@ -79,7 +79,7 @@ export class RealFileSystemStrategyAsync implements FileSystemStrategyAsync {
 
   async directoryExists(dirPath: string): Promise<boolean> {
     const resolvedPath = path.resolve(dirPath);
-    return fs.pathExists(resolvedPath);
+    return await fs.pathExists(resolvedPath);
   }
 
   async createDirectory(contentPath: string, recursive = false): Promise<boolean> {
