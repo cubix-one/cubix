@@ -18,6 +18,7 @@ export enum ErrorCode {
   WATCH_INVALID_EXCLUDE = 'E017',
   WATCH_INVALID_DEBOUNCE_TIME = 'E018',
   WATCH_INVALID_EVENTS = 'E019',
+  ROJO_SERVER_NOT_FOUND_ERROR = 'E020',
   UNKNOWN_ERROR = 'E999',
 }
 
@@ -47,4 +48,5 @@ export const ErrorMessages: Record<ErrorCode, string> = {
   [ErrorCode.WATCH_INVALID_DEBOUNCE_TIME]: 'Invalid debounce time.',
   [ErrorCode.WATCH_INVALID_EVENTS]: 'Invalid events.',
   [ErrorCode.UNKNOWN_ERROR]: 'An unknown error occurred.',
+  [ErrorCode.ROJO_SERVER_NOT_FOUND_ERROR]: 'Rojo server not found.',
 };
