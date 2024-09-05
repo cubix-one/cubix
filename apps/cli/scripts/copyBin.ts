@@ -7,9 +7,9 @@ async function copyBin() {
 
   try {
     await copyFile(sourceFile, destFile);
-    console.log('Arquivo rojo.exe copiado com sucesso.');
+    console.log('rojo.exe copied successfully.');
   } catch (error) {
-    console.error('Erro ao copiar o arquivo:', error);
+    console.error('Error copying the rojo.exe file:', error);
     process.exit(1);
   }
 }
