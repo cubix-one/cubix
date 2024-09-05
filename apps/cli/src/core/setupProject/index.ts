@@ -21,6 +21,7 @@ export async function setupProject(options: PromptOptions, spinnerReference: Ret
   await fs.createDirectory(projectDir);
 
   await cloneTemplate(projectDir, options.template);
+  await fs.deleteDirectory(path.join(projectDir, '.git'));
   await fs.createDirectory(path.join(projectDir, options.rootDir));
   await updateFlags(projectDir, options);
   await installDependencies(projectDir, options);
