@@ -7,11 +7,18 @@ import FileManager, { FileManagerOptions } from '@core/fileManagement';
 import Reorganize from '@core/reorganize';
 import { CoreAnnotationsMap } from '@/types/cubixConfig';
 import * as p from '@clack/prompts';
+import color from 'picocolors';
 
 const fs = FileManager(FileManagerOptions.LOCAL_ASYNC);
 
 export default async function BuildProject(deleteAll = true): Promise<boolean> {
   const cubixConfig = await getCubixConfig();
+  const srcFiles = await fs.readFilesByExtension(`${cubixConfig.outDir}`, 'ts');
+  if (srcFiles.length <= 0) {
+    p.log.warn(`No project files found in ${color.inverse(`./${cubixConfig.outDir}`)}, please create your first script before building.`);
+    process.exit(0);
+  }
+
   const internalTsConfigObj = await buildInternalTsConfig(cubixConfig.outDir);
   const internalRojoConfigObj = await buildRojoProjectConfig(cubixConfig);
 
