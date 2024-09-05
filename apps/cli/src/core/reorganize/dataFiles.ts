@@ -10,10 +10,15 @@ export interface IFile {
   content: string;
 }
 
+export interface IImport {
+  filePath: string;
+  line: string;
+}
+
 export interface IAnnotatedFile extends IFile {
   newName: string;
   annotations: string[];
-  imports: string[];
+  imports: IImport[];
   newImports: string[];
   newPath: string;
   prefix: 'client' | 'server' | 'shared' | 'module';
@@ -100,13 +105,22 @@ function getNewName(name: string, annotations: string[]): string {
   return newName;
 }
 
-async function getImports(filePath: string): Promise<string[]> {
+async function getImports(filePath: string): Promise<IImport[]> {
   const sourceFile = await fs.getSourceFile(filePath);
-  const imports: string[] = [];
+  const imports: IImport[] = [];
 
   for (const statement of sourceFile.statements) {
     if (statement.kind === ts.SyntaxKind.ImportDeclaration) {
-      imports.push(statement.getText());
+      const importText = statement.getText();
+      const match = importText.match(/from\s+['"](.+?)['"]/);
+      if (match) {
+        const relativePath = match[1];
+        const line = path.resolve(path.dirname(filePath), relativePath);
+
+        // Adiciona a extensão .ts se não estiver presente
+        const fullPath = line.endsWith('.ts') ? line : `${line}.ts`;
+        imports.push({ filePath: fullPath, line: importText });
+      }
     }
   }
 
