@@ -47,6 +47,6 @@ export const ErrorMessages: Record<ErrorCode, string> = {
   [ErrorCode.WATCH_INVALID_EXCLUDE]: 'Invalid exclude.',
   [ErrorCode.WATCH_INVALID_DEBOUNCE_TIME]: 'Invalid debounce time.',
   [ErrorCode.WATCH_INVALID_EVENTS]: 'Invalid events.',
+  [ErrorCode.ROJO_SERVER_NOT_FOUND_ERROR]: 'Rojo server not found. Please install cubix-one in your project.',
   [ErrorCode.UNKNOWN_ERROR]: 'An unknown error occurred.',
-  [ErrorCode.ROJO_SERVER_NOT_FOUND_ERROR]: 'Rojo server not found.',
 };
