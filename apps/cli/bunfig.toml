@@ -1,0 +1,17 @@
+[build]
+target = "node"
+outdir = "dist"
+sourcemap = "inline"
+
+[build.commonjs]
+format = "cjs"
+
+[build.paths]
+"@/*" = "./src/*"
+"@commands/*" = "./src/commands/*"
+"@core/*" = "./src/core/*"
+"@infrastructure/*" = "./src/infrastructure/*"
+"@strategies/*" = "./src/strategies/*"
+"@services/*" = "./src/services/*"
+"@types/*" = "./src/types/*"
+"@actions/*" = "./src/actions/*"
