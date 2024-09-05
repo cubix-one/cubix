@@ -8,8 +8,8 @@ export interface IRojoAddress {
   port: number;
 }
 
-export default async function RojoServer(projectPath: string, props: { port: number; address: string }): Promise<IRojoAddress> {
-  const { port, address } = props;
+export default async function RojoServer(projectPath: string, props?: { port: number; address: string }): Promise<IRojoAddress> {
+  const { port, address } = props || {};
   const cubixConfig = await getCubixConfig();
   const path = projectPath || cubixConfig.outDir;
 
