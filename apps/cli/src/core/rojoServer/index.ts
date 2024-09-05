@@ -8,15 +8,16 @@ export interface IRojoAddress {
   port: number;
 }
 
-export default async function RojoServer(projectPath: string, port: number, address: string): Promise<IRojoAddress> {
+export default async function RojoServer(projectPath: string, props: { port: number; address: string }): Promise<IRojoAddress> {
+  const { port, address } = props;
   const cubixConfig = await getCubixConfig();
   const path = projectPath || cubixConfig.outDir;
 
-  let command = ['rojo.exe', 'serve', path];
-  if (port) command = [...command, '--port', port.toString()];
-  if (address) command = [...command, '--address', address];
+  let runCommand = ['rojo.exe', 'serve', path];
+  if (port) runCommand = [...runCommand, '--port', port.toString()];
+  if (address) runCommand = [...runCommand, '--address', address];
 
-  const proc = Bun.spawn(command, {
+  const proc = Bun.spawn(runCommand, {
     cwd: process.cwd(),
     stdio: ['inherit', 'pipe', 'pipe'],
     env: { ...process.env },
@@ -27,41 +28,44 @@ export default async function RojoServer(projectPath: string, port: number, addr
   });
 
   const output = await getOutput(proc);
-  const { ip, port: finalPort } = await getIpAndPort(output, port);
-  return { ip, port: finalPort };
+  return await getIpAndPort(output, port);
 }
 
 async function getOutput(proc: Subprocess): Promise<string> {
   return new Promise((resolve, reject) => {
-    let output = '';
     const timeoutId = setTimeout(() => {
       reject(handleError(ErrorCode.ROJO_SERVER_TIMEOUT_ERROR, { exitProcess: true }));
     }, 10000);
 
-    if (proc.stdout instanceof ReadableStream) {
-      proc.stdout.pipeTo(
+    if (!(proc.stdout instanceof ReadableStream)) {
+      clearTimeout(timeoutId);
+      reject(handleError(ErrorCode.ROJO_SERVER_STDOUT_ERROR, { customMessage: 'stdout não é um ReadableStream', exitProcess: true }));
+      return;
+    }
+
+    const textDecoder = new TextDecoder();
+    let output = '';
+
+    proc.stdout
+      .pipeTo(
         new WritableStream({
           write(chunk) {
-            const chunkStr = new TextDecoder().decode(chunk).toString();
-            output += chunkStr;
+            output += textDecoder.decode(chunk);
             if (output.includes('Rojo server listening')) {
               clearTimeout(timeoutId);
               resolve(output);
             }
           },
         }),
-      );
-    } else {
-      clearTimeout(timeoutId);
-      reject(handleError(ErrorCode.ROJO_SERVER_STDOUT_ERROR, { customMessage: 'stdout não é um ReadableStream', exitProcess: true }));
-    }
-  }).catch((err) => {
-    handleError(ErrorCode.ROJO_SERVER_STDOUT_ERROR, { customMessage: err, exitProcess: true });
-    return '';
-  }) as Promise<string>;
+      )
+      .catch((err) => {
+        clearTimeout(timeoutId);
+        reject(handleError(ErrorCode.ROJO_SERVER_STDOUT_ERROR, { customMessage: err, exitProcess: true }));
+      });
+  });
 }
 
-async function getIpAndPort(output: string, port: number): Promise<IRojoAddress> {
+async function getIpAndPort(output: string, port?: number): Promise<IRojoAddress> {
   const urlPattern = /(https?:\/\/)([\w.-]+|\d+\.\d+\.\d+\.\d+):(\d+)/;
   const match = output.match(urlPattern);
 
