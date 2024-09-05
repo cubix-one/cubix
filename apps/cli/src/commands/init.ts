@@ -10,11 +10,6 @@ const description = `
 \u2514 ${color.blue('Install dependencies')}
 `;
 
-const initCommand = new Command('init')
-  .argument('[projectName]', 'The name of the project')
-  .description(description)
-  .action((projectName: string) => {
-    InitAction(projectName);
-  });
+const initCommand = new Command('init').argument('[projectName]', 'The name of the project').description(description).action(InitAction);
 
 export default initCommand;
