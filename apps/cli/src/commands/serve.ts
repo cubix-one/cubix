@@ -13,8 +13,6 @@ const serveCommand = new Command('serve')
   .option('-a, --address <address>', 'The IP address to listen on. Defaults to `127.0.0.1`')
   .argument('[projectPath]', 'The path to the project\nIf no path is provided, the [cubix.config.json]\n outDir directory will be used.')
   .description(description)
-  .action((projectPath: string, { port, address }: { port: number; address: string }) => {
-    ServeAction(projectPath, port, address);
-  });
+  .action(ServeAction);
 
 export default serveCommand;
