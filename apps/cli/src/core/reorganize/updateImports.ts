@@ -1,14 +1,13 @@
 import path from 'node:path';
-import type { IAnnotatedFile } from './dataFiles';
+import type { IAnnotatedFile, IImport } from './dataFiles';
 import FileManager, { FileManagerOptions } from '@core/fileManagement';
 
 const fs = FileManager(FileManagerOptions.LOCAL);
 
 export async function updateImports(rootDir: string, annotatedFiles: IAnnotatedFile[]) {
   const files = annotatedFiles.map((annotatedFile) => {
-    const { imports, newPath, path } = annotatedFile;
-    const newImports = updateImportsFields(imports, newPath, rootDir, annotatedFiles);
-    const newContent = updateImportLineOnContent(imports, newImports, path);
+    const newImports = updatedImportsFields(annotatedFile, annotatedFiles);
+    const newContent = updateImportLineOnContent(annotatedFile.imports, newImports, annotatedFile.path);
 
     return { ...annotatedFile, newImports, content: newContent };
   });
@@ -16,48 +15,36 @@ export async function updateImports(rootDir: string, annotatedFiles: IAnnotatedF
   return files;
 }
 
-function updateImportsFields(oldImports: string[], newPath: string, rootDir: string, annotatedFiles: IAnnotatedFile[]): string[] {
+function updatedImportsFields(currentAnnotatedFile: IAnnotatedFile, allAnnotatedFiles: IAnnotatedFile[]): string[] {
   const importRegex = /from\s+['"](.+?)['"]/;
 
-  return oldImports.map((importLine) => {
-    const importPathMatch = importLine.match(importRegex);
-    if (!importPathMatch) return importLine;
+  return currentAnnotatedFile.imports.map((importTo: IImport) => {
+    const importPathMatch = importTo.line.match(importRegex);
+    if (!importPathMatch) return importTo.line;
 
-    const importPath = importPathMatch[1];
-    const resolvedPath = path.resolve(rootDir, importPath);
+    const internalImportPath = importPathMatch[1];
+    const fileImportedNewPath = allAnnotatedFiles.find((file) => file.path === importTo.filePath)?.newPath as string;
 
-    if (!isValidImportPath(resolvedPath)) return importLine;
+    // Calcular o caminho relativo corretamente
+    const currentDir = path.dirname(currentAnnotatedFile.newPath);
+    const targetDir = path.dirname(fileImportedNewPath);
+    const resolvedPath = path.relative(currentDir, targetDir);
 
-    const annotatedFile = annotatedFiles.find((file) => file.path === `${resolvedPath}.ts`);
+    // Ajustar o caminho relativo
+    let newImportPath = path.join(resolvedPath, path.basename(fileImportedNewPath, '.ts'));
+    newImportPath = newImportPath.replace(/\\/g, '/');
+    newImportPath = newImportPath.startsWith('.') ? newImportPath : `./${newImportPath}`;
 
-    if (!annotatedFile) return importLine;
-
-    const newImportPath = getNewImportPath(newPath, annotatedFile.newPath);
-    return importLine.replace(importPath, newImportPath);
+    return importTo.line.replace(internalImportPath, newImportPath);
   });
 }
 
-function getNewImportPath(currentPath: string, targetPath: string): string {
-  let newImportPath = path.relative(path.dirname(currentPath), targetPath);
-  newImportPath = newImportPath.replace(/\\/g, '/').replace(/\.ts$/, '');
-  return newImportPath.startsWith('..') ? newImportPath : `./${newImportPath}`;
-}
-
-function isValidImportPath(importPath: string): boolean {
-  try {
-    require.resolve(importPath);
-    return true;
-  } catch (error) {
-    return false;
-  }
-}
-
-function updateImportLineOnContent(oldImports: string[], newImports: string[], filePath: string): string {
+function updateImportLineOnContent(oldImports: IImport[], newImports: string[], filePath: string): string {
   const sourceFile = fs.getSourceFile(filePath);
   let updatedContent = sourceFile.getText();
 
   oldImports.forEach((oldImport, index) => {
-    const oldImportPath = extractImportPath(oldImport);
+    const oldImportPath = extractImportPath(oldImport.line);
     const newImport = newImports[index];
     const newImportPath = extractImportPath(newImport);
 
