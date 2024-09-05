@@ -19,4 +19,4 @@ const schemaString = JSON.stringify(schema, null, 2);
 
 fs.writeFileSync(outputPath, schemaString);
 
-console.log(`Schema JSON gerado em: ${outputPath}`);
+console.log(`Generated schema JSON in: ${outputPath}`);
