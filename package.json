@@ -1,6 +1,6 @@
 {
 	"name": "cubix-one",
-	"version": "0.6.9",
+	"version": "0.7.0",
 	"description": "monorepo for cubix-one roblox framework",
 	"workspaces": ["apps/*", "packages/*"],
 	"bin": {
