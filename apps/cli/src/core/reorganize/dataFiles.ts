@@ -48,13 +48,20 @@ async function getAnnotatedFiles(cubixConfig: ICubixConfig): Promise<IAnnotatedF
   const annotatedFiles: IAnnotatedFile[] = [];
 
   if (files.length === 0) return [];
-
+  let indexFile = 0;
   for (const file of files) {
     const content = (await fs.readFile(file)) as string;
     const annotations = extractAnnotations(content);
 
     if (annotations.length > 0) {
-      const name = await fs.fileName(file);
+      let name = await fs.fileName(file);
+
+      if (name.includes('index')) {
+        name = path.dirname(file).split('\\').pop() as string;
+        name = `_${indexFile}_${name}.ts`;
+        indexFile++;
+      }
+
       const newName = getNewName(name.replace('.ts', ''), annotations);
       const imports = await getImports(file);
       const newPath = path.resolve(process.cwd(), cubixConfig.outDir, getNewPath(content), newName);
@@ -117,9 +124,19 @@ async function getImports(filePath: string): Promise<IImport[]> {
         const relativePath = match[1];
         const line = path.resolve(path.dirname(filePath), relativePath);
 
+        const fileExists = await fs.fileExists(`${line}.ts`);
+        const fileExistsWithIndex = await fs.fileExists(path.resolve(line, 'index.ts'));
+
+        if (!fileExists && !fileExistsWithIndex) continue;
         // Adiciona a extensão .ts se não estiver presente
-        const fullPath = line.endsWith('.ts') ? line : `${line}.ts`;
-        imports.push({ filePath: fullPath, line: importText });
+
+        if (fileExistsWithIndex) {
+          const fullPath = line.endsWith('.ts') ? line : `${line}\\index.ts`;
+          imports.push({ filePath: fullPath, line: importText });
+        } else {
+          const fullPath = line.endsWith('.ts') ? line : `${line}.ts`;
+          imports.push({ filePath: fullPath, line: importText });
+        }
       }
     }
   }
