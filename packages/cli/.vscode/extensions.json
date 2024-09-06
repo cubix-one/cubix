@@ -1,0 +1,7 @@
+{
+	"recommendations": [
+		"biomejs.biome",
+		"bungcip.better-toml",
+		"yoavbls.pretty-ts-errors"
+	]
+}
