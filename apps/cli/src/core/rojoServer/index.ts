@@ -17,13 +17,7 @@ export default async function RojoServer(projectPath: string, props?: { port: nu
   const cubixConfig = await getCubixConfig();
   const pathToProject = projectPath || cubixConfig.outDir;
 
-  const pathRojo = path.join(process.cwd(), 'node_modules', 'cubix-one', 'dist', 'apps', 'cli', 'rojo.exe');
-
-  if (!(await fs.fileExists(pathRojo))) {
-    throw handleError(ErrorCode.ROJO_SERVER_NOT_FOUND_ERROR, { exitProcess: true });
-  }
-
-  let runCommand = [pathRojo, 'serve', pathToProject];
+  let runCommand = ['rojo', 'serve', pathToProject];
   if (port) runCommand = [...runCommand, '--port', port.toString()];
   if (address) runCommand = [...runCommand, '--address', address];
 
