@@ -2,16 +2,14 @@
 	"name": "cubix-one",
 	"version": "0.7.1",
 	"description": "monorepo for cubix-one roblox framework",
-	"workspaces": ["apps/*", "packages/*"],
+	"workspaces": ["packages/*"],
 	"bin": {
-		"cubix": "dist/apps/cli/index.js"
+		"cubix": "dist/packages/cli/index.js"
 	},
 	"scripts": {
-		"build:sync": "bun run build:packages:sync && bun run build:apps:sync",
-		"build": "concurrently -n 'cli' -c 'blue' 'bun run build:cli'",
-		"build:apps:sync": "bun run build:cli",
-		"build:cli": "cd apps/cli && bun run build",
-		"build:packages:sync": "ls",
+		"build": "concurrently -n 'cli,utils' -c 'yellow,blue' 'bun run build:cli' 'bun run build:utils'",
+		"build:cli": "cd packages/cli && bun run build",
+		"build:utils": "cd packages/utils && bun run build",
 		"typecheck": "bunx --bun tsc",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint --write .",
@@ -21,13 +19,15 @@
 	"devDependencies": {
 		"@biomejs/biome": "1.8.3",
 		"@types/bun": "latest",
+		"typescript": "^5.0.0",
 		"concurrently": "^8.2.2"
 	},
 	"peerDependencies": {
-		"typescript": "^5.5.4"
+		"typescript": "^5.0.0"
 	},
 	"files": [
-		"dist/apps/cli/index.js",
-		"dist/apps/cli/rojo.exe"
+		"dist/packages/cli/index.js",
+		"dist/packages/cli/rojo.exe",
+		"dist/packages/utils/index.js"
 	]
 }

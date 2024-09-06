@@ -1,0 +1,23 @@
+{
+	"extends": "../../tsconfig.json",
+	"compilerOptions": {
+		"baseUrl": "./src",
+		"skipLibCheck": true,
+		"types": ["node", "bun-types"],
+		"paths": {
+			"@/*": ["./*"],
+			"@commands/*": ["./commands/*"],
+			"@core/*": ["./core/*"],
+			"@types/*": ["./types/*"],
+			"@actions/*": ["./actions/*"],
+		},
+		"rootDir": "./src",
+		"outDir": "../../dist/apps/cli",
+		"resolveJsonModule": true,
+		"esModuleInterop": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true
+	},
+	"include": ["src/**/*"],
+	"exclude": ["node_modules", "dist"]
+}

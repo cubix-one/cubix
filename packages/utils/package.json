@@ -1,0 +1,24 @@
+{
+  "name": "@cubix-one/utils",
+  "version": "0.0.1",
+	"module": "index.ts",
+	"main": "../../dist/packages/utils/index.js",
+  "types": "../../dist/packages/utils/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc && bun build ./index.ts --outdir=../../dist/packages/utils --target=node"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "glob": "^11.0.0"
+  },
+  "files": [
+    "src"
+  ]
+}
