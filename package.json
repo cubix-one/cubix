@@ -7,9 +7,10 @@
 		"cubix": "dist/packages/cli/index.js"
 	},
 	"scripts": {
-		"build": "concurrently -n 'cli,utils' -c 'yellow,blue' 'bun run build:cli' 'bun run build:utils'",
+		"build": "concurrently -n 'cli,utils,logger' -c 'yellow,blue,green' 'bun run build:cli' 'bun run build:utils' 'bun run build:logger'",
 		"build:cli": "cd packages/cli && bun run build",
 		"build:utils": "cd packages/utils && bun run build",
+		"build:logger": "cd packages/logger && bun run build",
 		"typecheck": "bunx --bun tsc",
 		"lint": "biome lint .",
 		"lint:fix": "biome lint --write .",
